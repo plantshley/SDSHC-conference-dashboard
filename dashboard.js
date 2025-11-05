@@ -361,12 +361,14 @@ function createAttendeeTypeDonutChart() {
 // Chart 5: Attendee Type by Year
 function createAttendeeTypeYearChart() {
     const yearTypeData = {};
+    const yearTotals = {};
 
     surveyData.forEach(row => {
         const year = row.year;
         const type = row.Attendee_Type_Category || 'Unknown';
         if (!yearTypeData[year]) yearTypeData[year] = {};
         yearTypeData[year][type] = (yearTypeData[year][type] || 0) + 1;
+        yearTotals[year] = (yearTotals[year] || 0) + 1;
     });
 
     const years = Object.keys(yearTypeData).sort();
@@ -375,7 +377,11 @@ function createAttendeeTypeYearChart() {
 
     const datasets = topTypes.map((type, idx) => ({
         label: type,
-        data: years.map(year => yearTypeData[year][type] || 0),
+        data: years.map(year => {
+            const count = yearTypeData[year][type] || 0;
+            const total = yearTotals[year];
+            return ((count / total) * 100).toFixed(1);
+        }),
         backgroundColor: [COLORS.primary, COLORS.accent, COLORS.orange,
                          COLORS.brown, COLORS.blue, COLORS.purple][idx]
     }));
@@ -392,7 +398,26 @@ function createAttendeeTypeYearChart() {
             maintainAspectRatio: true,
             scales: {
                 x: { stacked: true },
-                y: { stacked: true, beginAtZero: true }
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 100,
+                    title: { display: true, text: 'Percentage of Attendees' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y + '%';
+                        }
+                    }
+                }
             }
         }
     });
@@ -548,10 +573,12 @@ function createImplementationByTypeChart() {
 // Chart 9: Satisfaction Distribution
 function createSatisfactionDistributionChart() {
     const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    let total = 0;
     surveyData.forEach(row => {
         const rating = parseInt(row.Satisfaction_Rating);
         if (rating >= 1 && rating <= 5) {
             ratingCounts[rating]++;
+            total++;
         }
     });
 
@@ -561,9 +588,14 @@ function createSatisfactionDistributionChart() {
         data: {
             labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
             datasets: [{
-                label: 'Number of Responses',
-                data: [ratingCounts[1], ratingCounts[2], ratingCounts[3],
-                       ratingCounts[4], ratingCounts[5]],
+                label: '% of Responses',
+                data: [
+                    ((ratingCounts[1] / total) * 100).toFixed(1),
+                    ((ratingCounts[2] / total) * 100).toFixed(1),
+                    ((ratingCounts[3] / total) * 100).toFixed(1),
+                    ((ratingCounts[4] / total) * 100).toFixed(1),
+                    ((ratingCounts[5] / total) * 100).toFixed(1)
+                ],
                 backgroundColor: [COLORS.red, COLORS.orange, COLORS.brown,
                                  COLORS.accent, COLORS.primary],
                 borderWidth: 2,
@@ -574,12 +606,21 @@ function createSatisfactionDistributionChart() {
             responsive: true,
             maintainAspectRatio: true,
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Percentage of Responses' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
             },
             plugins: {
                 datalabels: {
                     anchor: 'end',
                     align: 'top',
+                    formatter: (value) => value + '%',
                     font: { weight: 'bold', size: 12 }
                 }
             }
@@ -591,10 +632,12 @@ function createSatisfactionDistributionChart() {
 // Chart 10: Knowledge Gain Distribution
 function createKnowledgeDistributionChart() {
     const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    let total = 0;
     surveyData.forEach(row => {
         const rating = parseInt(row.Knowledge_Gain_Rating);
         if (rating >= 1 && rating <= 4) {
             ratingCounts[rating]++;
+            total++;
         }
     });
 
@@ -604,9 +647,13 @@ function createKnowledgeDistributionChart() {
         data: {
             labels: ['Level 1', 'Level 2', 'Level 3', 'Level 4'],
             datasets: [{
-                label: 'Number of Responses',
-                data: [ratingCounts[1], ratingCounts[2], ratingCounts[3],
-                       ratingCounts[4]],
+                label: '% of Responses',
+                data: [
+                    ((ratingCounts[1] / total) * 100).toFixed(1),
+                    ((ratingCounts[2] / total) * 100).toFixed(1),
+                    ((ratingCounts[3] / total) * 100).toFixed(1),
+                    ((ratingCounts[4] / total) * 100).toFixed(1)
+                ],
                 backgroundColor: [COLORS.red, COLORS.orange, COLORS.brown,
                                  COLORS.accent],
                 borderWidth: 2,
@@ -617,12 +664,21 @@ function createKnowledgeDistributionChart() {
             responsive: true,
             maintainAspectRatio: true,
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Percentage of Responses' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
             },
             plugins: {
                 datalabels: {
                     anchor: 'end',
                     align: 'top',
+                    formatter: (value) => value + '%',
                     font: { weight: 'bold', size: 12 }
                 }
             }
@@ -693,6 +749,7 @@ function createTopicPopularityChart() {
         }
     });
 
+    const totalMentions = Object.values(topicCounts).reduce((a, b) => a + b, 0);
     const sortedTopics = Object.entries(topicCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 12);
@@ -703,8 +760,8 @@ function createTopicPopularityChart() {
         data: {
             labels: sortedTopics.map(t => t[0]),
             datasets: [{
-                label: 'Mentions',
-                data: sortedTopics.map(t => t[1]),
+                label: '% of Total Interest Mentions',
+                data: sortedTopics.map(t => ((t[1] / totalMentions) * 100).toFixed(1)),
                 backgroundColor: COLORS.accent,
                 borderColor: COLORS.primary,
                 borderWidth: 2
@@ -718,7 +775,18 @@ function createTopicPopularityChart() {
                 datalabels: {
                     anchor: 'end',
                     align: 'right',
-                    font: { weight: 'bold' }
+                    formatter: (value) => value + '%',
+                    font: { weight: 'bold', size: 11 }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Percentage of Total Mentions' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
                 }
             }
         },
@@ -738,16 +806,23 @@ function createTopicTrendChart() {
     ];
 
     const yearTopicData = {};
+    const yearTotalMentions = {};
 
     surveyData.forEach(row => {
         const year = row.year;
         const categories = row.Interest_Categories;
         if (categories && categories !== 'NA') {
             const topics = categories.split(';').map(t => t.trim());
-            if (!yearTopicData[year]) yearTopicData[year] = {};
+            if (!yearTopicData[year]) {
+                yearTopicData[year] = {};
+                yearTotalMentions[year] = 0;
+            }
             topics.forEach(topic => {
-                if (keyTopics.includes(topic)) {
-                    yearTopicData[year][topic] = (yearTopicData[year][topic] || 0) + 1;
+                if (topic) {
+                    yearTotalMentions[year]++;
+                    if (keyTopics.includes(topic)) {
+                        yearTopicData[year][topic] = (yearTopicData[year][topic] || 0) + 1;
+                    }
                 }
             });
         }
@@ -759,7 +834,11 @@ function createTopicTrendChart() {
 
     const datasets = keyTopics.map((topic, idx) => ({
         label: topic,
-        data: years.map(year => yearTopicData[year][topic] || 0),
+        data: years.map(year => {
+            const count = yearTopicData[year][topic] || 0;
+            const total = yearTotalMentions[year] || 1;
+            return ((count / total) * 100).toFixed(1);
+        }),
         borderColor: colors[idx],
         backgroundColor: colors[idx] + '33',
         borderWidth: 3,
@@ -779,7 +858,24 @@ function createTopicTrendChart() {
             responsive: true,
             maintainAspectRatio: true,
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Percentage of Total Mentions' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y + '%';
+                        }
+                    }
+                }
             }
         }
     });
@@ -792,16 +888,23 @@ function createTopicByTypeChart() {
                        'Economics & Financial', 'Carbon & Climate'];
 
     const typeTopicData = {};
+    const typeTotalMentions = {};
 
     surveyData.forEach(row => {
         const type = row.Attendee_Type_Category;
         const categories = row.Interest_Categories;
         if (attendeeTypes.includes(type) && categories && categories !== 'NA') {
-            if (!typeTopicData[type]) typeTopicData[type] = {};
+            if (!typeTopicData[type]) {
+                typeTopicData[type] = {};
+                typeTotalMentions[type] = 0;
+            }
             const topics = categories.split(';').map(t => t.trim());
             topics.forEach(topic => {
-                if (topTopics.includes(topic)) {
-                    typeTopicData[type][topic] = (typeTopicData[type][topic] || 0) + 1;
+                if (topic) {
+                    typeTotalMentions[type]++;
+                    if (topTopics.includes(topic)) {
+                        typeTopicData[type][topic] = (typeTopicData[type][topic] || 0) + 1;
+                    }
                 }
             });
         }
@@ -809,7 +912,11 @@ function createTopicByTypeChart() {
 
     const datasets = attendeeTypes.map((type, idx) => ({
         label: type,
-        data: topTopics.map(topic => typeTopicData[type]?.[topic] || 0),
+        data: topTopics.map(topic => {
+            const count = typeTopicData[type]?.[topic] || 0;
+            const total = typeTotalMentions[type] || 1;
+            return ((count / total) * 100).toFixed(1);
+        }),
         backgroundColor: [COLORS.primary, COLORS.accent, COLORS.orange][idx],
         borderWidth: 2,
         borderColor: '#fff'
@@ -826,7 +933,24 @@ function createTopicByTypeChart() {
             responsive: true,
             maintainAspectRatio: true,
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Percentage of Group\'s Mentions' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y + '%';
+                        }
+                    }
+                }
             }
         }
     });
@@ -942,12 +1066,17 @@ function createTechnicianInterestChart() {
 // Chart 17: Technician Interest by Type
 function createTechnicianByTypeChart() {
     const typeTechnician = {};
+    const typeTotal = {};
 
     surveyData.forEach(row => {
         const type = row.Attendee_Type_Category;
         const interest = row['Would.you.be.interested.in.having.a.Soil.Health.Technician.come.out.annually.to.monitor.soil.health.parameters.'];
-        if (type && interest === 'Yes') {
-            typeTechnician[type] = (typeTechnician[type] || 0) + 1;
+        if (type && interest && interest !== 'Not Applicable') {
+            if (!typeTotal[type]) typeTotal[type] = 0;
+            typeTotal[type]++;
+            if (interest === 'Yes') {
+                typeTechnician[type] = (typeTechnician[type] || 0) + 1;
+            }
         }
     });
 
@@ -961,8 +1090,12 @@ function createTechnicianByTypeChart() {
         data: {
             labels: sortedTypes.map(t => t[0]),
             datasets: [{
-                label: 'Definite Interest ("Yes")',
-                data: sortedTypes.map(t => t[1]),
+                label: '% Saying "Yes" to Technician Visits',
+                data: sortedTypes.map(t => {
+                    const yesCount = t[1];
+                    const total = typeTotal[t[0]];
+                    return ((yesCount / total) * 100).toFixed(1);
+                }),
                 backgroundColor: COLORS.primary,
                 borderColor: COLORS.accent,
                 borderWidth: 2
@@ -972,11 +1105,29 @@ function createTechnicianByTypeChart() {
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: true,
+            scales: {
+                x: {
+                    title: { display: true, text: 'Percentage Interested' },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
             plugins: {
                 datalabels: {
                     anchor: 'end',
                     align: 'right',
+                    formatter: (value) => value + '%',
                     font: { weight: 'bold' }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.x + '%';
+                        }
+                    }
                 }
             }
         },
