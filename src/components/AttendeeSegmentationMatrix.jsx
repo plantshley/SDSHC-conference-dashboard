@@ -1,14 +1,14 @@
 import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
 
 const COLORS = {
-  'Agricultural Producers': '#90CAF9',
-  'Conservation Professionals': '#BA68C8',
-  'Students & Educators': '#F48FB1',
-  'Land Managers & Owners': '#9FA8DA',
-  'Technical Professionals': '#CE93D8',
-  'Industry/Commercial': '#FF80AB',
-  'Other Professionals': '#81D4FA',
-  'Other': '#5C6BC0'
+  'Agricultural Producers': '#87CEEB',
+  'Conservation Professionals': '#6A5ACD',
+  'Students & Educators': '#9370DB',
+  'Land Managers & Owners': '#BA55D3',
+  'Technical Professionals': '#DA70D6',
+  'Industry/Commercial': '#EE82EE',
+  'Other Professionals': '#FF69B4',
+  'Other': '#FF1493'
 }
 
 const LIKELIHOOD_MAP = {

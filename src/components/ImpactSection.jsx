@@ -1,7 +1,7 @@
 import { BarChart, Bar, LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ZAxis } from 'recharts'
 import SatisfactionDriversAnalysis from './SatisfactionDriversAnalysis'
 
-const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA']
+const COLORS = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3', '#DA70D6', '#EE82EE', '#FF69B4']
 
 export default function ImpactSection({ surveyData }) {
   // Implementation likelihood distribution
@@ -186,60 +186,15 @@ export default function ImpactSection({ surveyData }) {
         <h3 style={{ color: '#1976D2', marginBottom: '20px' }}>Key Insights</h3>
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>⭐</span>
             <strong style={{ color: '#1976D2' }}>Consistently High Impact:</strong> 97% likely to implement changes and 91% satisfaction rating remain steady across all years
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>📚</span>
             <strong style={{ color: '#1976D2' }}>Strong Correlations:</strong> Knowledge gained, satisfaction, and implementation intention are all very strongly correlated (p &lt; 0.001)
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌱</span>
             <strong style={{ color: '#1976D2' }}>Opportunity for Advancement:</strong> Knowledge ratings moderate (85%), suggesting opportunity for deeper, more advanced content
           </li>
         </ul>

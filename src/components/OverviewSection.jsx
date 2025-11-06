@@ -81,154 +81,38 @@ export default function OverviewSection({ surveyData }) {
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
-              content: '✓',
               position: 'absolute',
               left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+              fontSize: '22px'
+            }}>📈</span>
             <strong style={{ color: '#1976D2' }}>Exceptional Growth:</strong> Ticket registrations increased 56% from 251 (2022) to 391 (2025) - total 1,307+ attendees over 4 years
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌍</span>
             <strong style={{ color: '#1976D2' }}>International Reach:</strong> Attendees from over 260 communities, 48 states & provinces, and 14 countries – from local South Dakota to Morocco, Greece, India, and Fiji
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>⭐</span>
             <strong style={{ color: '#1976D2' }}>Conference Satisfaction:</strong> 91% rated 4-5 stars across all years
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌱</span>
             <strong style={{ color: '#1976D2' }}>Impact:</strong> 87% likely to change practices/implement new knowledge
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>👥</span>
             <strong style={{ color: '#1976D2' }}>Diverse Reach:</strong> From tribal land managers to commercial operations
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>💡</span>
             <strong style={{ color: '#1976D2' }}>Topics of Interest:</strong> Nutrient management, health connections, & regenerative ag topics trending up
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🔧</span>
             <strong style={{ color: '#1976D2' }}>Technician Assistance Interest:</strong> 48% respondents interested in technician program
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🔗</span>
             <strong style={{ color: '#1976D2' }}>Strong Correlations:</strong> Knowledge gained, conference satisfaction, technician assistance interest, and likelihood to implement changes are all very strongly correlated
           </li>
         </ul>

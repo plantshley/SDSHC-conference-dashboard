@@ -1,7 +1,7 @@
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import MapView from './MapView'
 
-const COLORS = ['#90CAF9', '#9FA8DA', '#BA68C8', '#CE93D8', '#F48FB1', '#FF80AB', '#81D4FA', '#5C6BC0', '#7986CB', '#9575CD']
+const COLORS = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3', '#DA70D6', '#EE82EE', '#FF69B4', '#FF1493', '#FF6347', '#FA8072', '#FFB347', '#F0E68C', '#9ACD32', '#90EE90', '#00FA9A']
 
 export default function GeographySection({ geoStateOverall, geoStateByEvent, geoCityOverall }) {
   // Top 10 states
@@ -229,60 +229,15 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
         </p>
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🏘️</span>
             <strong style={{ color: '#1976D2' }}>Exceptional Reach:</strong> Attendees from over 260 communities, 48 states & provinces, and 14 countries - from local South Dakota to Morocco, Greece, India, and Fiji
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🗺️</span>
             <strong style={{ color: '#1976D2' }}>Regional Leader:</strong> South Dakota dominates with 56% of registrations, followed by Missouri, Minnesota, and Nebraska
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>📈</span>
             <strong style={{ color: '#1976D2' }}>Growing Attendance:</strong> Overall increasing attendance from 251 (2022) to 391 (2025), though survey response rate declining
           </li>
         </ul>

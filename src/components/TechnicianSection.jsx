@@ -126,60 +126,15 @@ export default function TechnicianSection({ surveyData }) {
         <h3 style={{ color: '#1976D2', marginBottom: '20px' }}>Key Insights</h3>
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>📉</span>
             <strong style={{ color: '#1976D2' }}>Declining Interest:</strong> Technician program interest dropped from 47% (2022) to 26% (2025), requiring renewed engagement efforts
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🚜</span>
             <strong style={{ color: '#1976D2' }}>Target Audience:</strong> Land managers/owners and producers more likely to want assistance than professionals, educators, or students
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🔗</span>
             <strong style={{ color: '#1976D2' }}>Implementation Link:</strong> Technician interest correlates with higher implementation intention and livestock integration interest
           </li>
         </ul>

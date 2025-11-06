@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA']
+const COLORS = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3']
 
 export default function SatisfactionDriversAnalysis({ surveyData }) {
   // Calculate statistics by year

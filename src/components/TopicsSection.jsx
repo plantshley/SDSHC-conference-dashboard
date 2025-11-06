@@ -1,5 +1,6 @@
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import TopicInterestHeatmap from './TopicInterestHeatmap'
+import TopicEvolutionNetwork from './TopicEvolutionNetwork'
 
 const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA', '#5C6BC0']
 
@@ -66,6 +67,8 @@ export default function TopicsSection({ surveyData }) {
 
       <TopicInterestHeatmap surveyData={surveyData} />
 
+      <TopicEvolutionNetwork surveyData={surveyData} />
+
       <div className="insights-box" style={{
         background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
         color: '#333',
@@ -78,60 +81,15 @@ export default function TopicsSection({ surveyData }) {
         <h3 style={{ color: '#1976D2', marginBottom: '20px' }}>Key Insights</h3>
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🔄</span>
             <strong style={{ color: '#1976D2' }}>Shifting Priorities:</strong> Livestock integration & cover crops dominated 2022-23, but interest now distributed more evenly across topics
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>📈</span>
             <strong style={{ color: '#1976D2' }}>Trending Up:</strong> Regenerative ag, nutrient management, and health connections showing significant growth over 4 years
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{
-              content: '✓',
-              position: 'absolute',
-              left: 0,
-              color: '#42A5F5',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              width: '24px',
-              height: '24px',
-              background: 'white',
-              borderRadius: '50%',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-            }}>✓</span>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>👔</span>
             <strong style={{ color: '#1976D2' }}>Audience Preferences:</strong> Professionals seek economics & financial topics, while producers/educators focus on field practices like cover crops
           </li>
         </ul>
