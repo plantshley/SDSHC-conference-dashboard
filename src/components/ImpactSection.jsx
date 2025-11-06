@@ -1,4 +1,5 @@
 import { BarChart, Bar, LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ZAxis } from 'recharts'
+import SatisfactionDriversAnalysis from './SatisfactionDriversAnalysis'
 
 const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA']
 
@@ -171,6 +172,8 @@ export default function ImpactSection({ surveyData }) {
         </div>
       </div>
 
+      <SatisfactionDriversAnalysis surveyData={surveyData} />
+
       <div className="insights-box" style={{
         background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
         color: '#333',
@@ -199,7 +202,7 @@ export default function ImpactSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>High Implementation:</strong> 97% of respondents likely to implement practices learned
+            <strong style={{ color: '#1976D2' }}>Consistently High Impact:</strong> 97% likely to implement changes and 91% satisfaction rating remain steady across all years
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -218,7 +221,26 @@ export default function ImpactSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Strong Correlation:</strong> High satisfaction correlates with higher knowledge gain
+            <strong style={{ color: '#1976D2' }}>Strong Correlations:</strong> Knowledge gained, satisfaction, and implementation intention are all very strongly correlated (p &lt; 0.001)
+          </li>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{
+              content: '✓',
+              position: 'absolute',
+              left: 0,
+              color: '#42A5F5',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              width: '24px',
+              height: '24px',
+              background: 'white',
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}>✓</span>
+            <strong style={{ color: '#1976D2' }}>Opportunity for Advancement:</strong> Knowledge ratings moderate (85%), suggesting opportunity for deeper, more advanced content
           </li>
         </ul>
       </div>

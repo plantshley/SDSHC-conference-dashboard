@@ -1,4 +1,5 @@
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import TopicInterestHeatmap from './TopicInterestHeatmap'
 
 const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA', '#5C6BC0']
 
@@ -63,6 +64,8 @@ export default function TopicsSection({ surveyData }) {
         </ResponsiveContainer>
       </div>
 
+      <TopicInterestHeatmap surveyData={surveyData} />
+
       <div className="insights-box" style={{
         background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
         color: '#333',
@@ -91,7 +94,7 @@ export default function TopicsSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Top Topics:</strong> Cover crops, soil health, and no-till practices consistently generate high interest
+            <strong style={{ color: '#1976D2' }}>Shifting Priorities:</strong> Livestock integration & cover crops dominated 2022-23, but interest now distributed more evenly across topics
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -110,7 +113,26 @@ export default function TopicsSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Emerging Interest:</strong> Economics and water quality topics showing increased engagement
+            <strong style={{ color: '#1976D2' }}>Trending Up:</strong> Regenerative ag, nutrient management, and health connections showing significant growth over 4 years
+          </li>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{
+              content: '✓',
+              position: 'absolute',
+              left: 0,
+              color: '#42A5F5',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              width: '24px',
+              height: '24px',
+              background: 'white',
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}>✓</span>
+            <strong style={{ color: '#1976D2' }}>Audience Preferences:</strong> Professionals seek economics & financial topics, while producers/educators focus on field practices like cover crops
           </li>
         </ul>
       </div>

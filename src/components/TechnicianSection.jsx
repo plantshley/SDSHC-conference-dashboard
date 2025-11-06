@@ -1,4 +1,5 @@
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import TechnicianProgramPotential from './TechnicianProgramPotential'
 
 const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1']
 
@@ -111,6 +112,8 @@ export default function TechnicianSection({ surveyData }) {
         </div>
       </div>
 
+      <TechnicianProgramPotential surveyData={surveyData} />
+
       <div className="insights-box" style={{
         background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
         color: '#333',
@@ -139,7 +142,7 @@ export default function TechnicianSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Strong Demand:</strong> High interest in technical assistance across all attendee types
+            <strong style={{ color: '#1976D2' }}>Declining Interest:</strong> Technician program interest dropped from 47% (2022) to 26% (2025), requiring renewed engagement efforts
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -158,7 +161,26 @@ export default function TechnicianSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Program Potential:</strong> Clear opportunity for soil health technician program expansion
+            <strong style={{ color: '#1976D2' }}>Target Audience:</strong> Land managers/owners and producers more likely to want assistance than professionals, educators, or students
+          </li>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{
+              content: '✓',
+              position: 'absolute',
+              left: 0,
+              color: '#42A5F5',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              width: '24px',
+              height: '24px',
+              background: 'white',
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}>✓</span>
+            <strong style={{ color: '#1976D2' }}>Implementation Link:</strong> Technician interest correlates with higher implementation intention and livestock integration interest
           </li>
         </ul>
       </div>

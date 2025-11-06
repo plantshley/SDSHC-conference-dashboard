@@ -1,4 +1,5 @@
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import MapView from './MapView'
 
 const COLORS = ['#90CAF9', '#9FA8DA', '#BA68C8', '#CE93D8', '#F48FB1', '#FF80AB', '#81D4FA', '#5C6BC0', '#7986CB', '#9575CD']
 
@@ -93,7 +94,7 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
     <section>
       <h2>Geographic Reach</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
         {/* Top States */}
         <div className="chart-section">
           <h3>Top States by Attendance</h3>
@@ -109,6 +110,25 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="count" fill="#90CAF9" name="Ticket Registrations" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Top Cities */}
+        <div className="chart-section">
+          <h3>Top 15 Cities</h3>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={topCities} margin={{ top: 5, right: 30, left: 120, bottom: 20 }} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" style={{ fontSize: '11px' }} />
+              <YAxis
+                type="category"
+                dataKey="city"
+                width={110}
+                style={{ fontSize: '10px' }}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="count" fill="#BA68C8" name="Registrations" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -132,30 +152,20 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
                 ))}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
-              <Legend verticalAlign="bottom" height={60} wrapperStyle={{ fontSize: '11px', fontWeight: 600 }} />
+              <Legend verticalAlign="bottom" height={60} wrapperStyle={{ fontSize: '10px', fontWeight: 600 }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
-        {/* Top Cities */}
+        {/* South Dakota Regional Distribution Map */}
         <div className="chart-section">
-          <h3>Top 15 Cities</h3>
-          <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={topCities} margin={{ top: 5, right: 30, left: 120, bottom: 20 }} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" style={{ fontSize: '11px' }} />
-              <YAxis
-                type="category"
-                dataKey="city"
-                width={110}
-                style={{ fontSize: '10px' }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="count" fill="#BA68C8" name="Registrations" />
-            </BarChart>
-          </ResponsiveContainer>
+          <h3>South Dakota Regional Distribution</h3>
+          <p style={{ fontSize: '14px', color: '#666', marginBottom: '16px' }}>
+            Interactive map of South Dakota cities. Circle size and color represent ticket registration counts.
+          </p>
+          <MapView geoCityOverall={geoCityOverall} />
         </div>
 
         {/* State Trends */}
@@ -235,7 +245,7 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Regional Leader:</strong> South Dakota leads with 56% of total registrations
+            <strong style={{ color: '#1976D2' }}>Exceptional Reach:</strong> Attendees from over 260 communities, 48 states & provinces, and 14 countries - from local South Dakota to Morocco, Greece, India, and Fiji
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -254,7 +264,7 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Global Reach:</strong> Attendees from {internationalData.length}+ countries including Canada, Czech Republic, Fiji, and more
+            <strong style={{ color: '#1976D2' }}>Regional Leader:</strong> South Dakota dominates with 56% of registrations, followed by Missouri, Minnesota, and Nebraska
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -273,7 +283,7 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Urban & Rural Mix:</strong> Brookings leads cities with 6% of registrations, followed by diverse small towns
+            <strong style={{ color: '#1976D2' }}>Growing Attendance:</strong> Overall increasing attendance from 251 (2022) to 391 (2025), though survey response rate declining
           </li>
         </ul>
       </div>

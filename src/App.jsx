@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Papa from 'papaparse'
 import './App.css'
+import 'leaflet/dist/leaflet.css'
 import StatsCard from './components/StatsCard'
 import NavButton from './components/NavButton'
 import OverviewSection from './components/OverviewSection'
@@ -75,13 +76,22 @@ function App() {
       {/* Header */}
       <header className="dashboard-header">
         <div className="header-content">
+          <img src={import.meta.env.BASE_URL + "sdshc-logo.png"} alt="SDSHC Logo" className="header-logo" />
           <div className="header-text">
-            <h1>South Dakota Soil Health Coalition</h1>
-            <p className="subtitle">Annual Conference Impact Dashboard (2022-2025)</p>
-            <p style={{ margin: '8px 0 0 0', fontSize: '16px', fontStyle: 'italic', opacity: 0.9 }}>
-              Cultivating Knowledge, Growing Change
+            <h1>Soil Health Conference & Annual Meeting<br />Impact Dashboard (2022-2025)</h1>
+            <p className="subtitle">
+              <a href="https://www.sdsoilhealthcoalition.org/" target="_blank" rel="noopener noreferrer" className="coalition-link">
+                <span className="conservation-hover-group">
+                  South Dakota Soil Health Coalition
+                  <span className="conservation-emoji conservation-emoji-1">🌾</span>
+                  <span className="conservation-emoji conservation-emoji-2">🌱</span>
+                  <span className="conservation-emoji conservation-emoji-3">🚜</span>
+                  <span className="conservation-emoji conservation-emoji-4">💧</span>
+                </span>
+              </a>
             </p>
           </div>
+          <img src={import.meta.env.BASE_URL + "sdshc-logo.png"} alt="SDSHC Logo" className="header-logo" />
         </div>
       </header>
 

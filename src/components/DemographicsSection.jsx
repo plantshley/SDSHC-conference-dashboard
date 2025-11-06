@@ -1,4 +1,5 @@
 import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import AttendeeSegmentationMatrix from './AttendeeSegmentationMatrix'
 
 const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA']
 
@@ -143,6 +144,8 @@ export default function DemographicsSection({ surveyData }) {
         </ResponsiveContainer>
       </div>
 
+      <AttendeeSegmentationMatrix surveyData={surveyData} />
+
       <div className="insights-box" style={{
         background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
         color: '#333',
@@ -171,7 +174,7 @@ export default function DemographicsSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Diverse Audience:</strong> Conference attracts a mix of farmers, ranchers, agronomists, and researchers
+            <strong style={{ color: '#1976D2' }}>Diverse Reach:</strong> Agricultural Producers (45.5%) and Conservation Professionals (29.5%) dominate, but diverse audience includes tribal land managers, biologists, students, and commercial operations
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{
@@ -190,7 +193,26 @@ export default function DemographicsSection({ surveyData }) {
               justifyContent: 'center',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>✓</span>
-            <strong style={{ color: '#1976D2' }}>Growing Participation:</strong> Steady increase in attendee diversity across all categories
+            <strong style={{ color: '#1976D2' }}>Growing Student Engagement:</strong> Large increase in Students & Educators in 2025 (17.4% vs 3.6% in 2022)
+          </li>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{
+              content: '✓',
+              position: 'absolute',
+              left: 0,
+              color: '#42A5F5',
+              fontWeight: 'bold',
+              fontSize: '20px',
+              width: '24px',
+              height: '24px',
+              background: 'white',
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}>✓</span>
+            <strong style={{ color: '#1976D2' }}>Knowledge Correlation:</strong> Attendee type strongly correlates with knowledge gained - land managers/owners gain more knowledge than technical professionals
           </li>
         </ul>
       </div>
