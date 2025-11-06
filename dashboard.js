@@ -1,28 +1,33 @@
 // Dashboard JavaScript - SD Soil Health Coalition Conference Analysis
 
-// Color scheme matching CSS
+// Modern Pastel Color Palette - Matching Cost-Share Dashboard
 const COLORS = {
-    primary: '#2D5016',
-    accent: '#6B8E23',
-    orange: '#CC7722',
-    brown: '#5D4E37',
-    tan: '#F5DEB3',
-    yellow: '#FFD700',
-    paleGreen: '#9ACD32',
-    darkGreen: '#1a3a0f',
-    blue: '#4A90E2',
-    purple: '#8E44AD',
-    red: '#E74C3C'
+    primary: '#42A5F5',      // Light Blue
+    accent: '#90CAF9',       // Lighter Blue
+    purple: '#BA68C8',       // Soft Purple
+    pink: '#F48FB1',         // Soft Pink
+    lavender: '#9FA8DA',     // Lavender
+    darkBlue: '#1976D2',     // Darker Blue
+    orange: '#FFB74D',       // Soft Orange
+    green: '#81C784',        // Soft Green
+    yellow: '#FFF176',       // Soft Yellow
+    teal: '#4DD0E1',         // Soft Teal
+    red: '#E57373',          // Soft Red
+    paleGreen: '#AED581'     // Pale Green
 };
 
 // Chart.js default configuration
-Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-Chart.defaults.color = '#3E2723';
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
+Chart.defaults.color = '#333';
 Chart.defaults.plugins.legend.display = true;
 Chart.defaults.plugins.legend.position = 'bottom';
 
 // Data storage
 let surveyData = [];
+let geoStateOverall = [];
+let geoStateByEvent = [];
+let geoCityOverall = [];
+let geoCityByEvent = [];
 
 // Navigation
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,9 +57,28 @@ function showSection(sectionId) {
 // Load CSV data
 async function loadData() {
     try {
-        const response = await fetch('soil_health_survey_enhanced.csv');
-        const csvText = await response.text();
-        surveyData = parseCSV(csvText);
+        // Load survey data
+        const surveyResponse = await fetch('soil_health_survey_enhanced.csv');
+        const surveyText = await surveyResponse.text();
+        surveyData = parseCSV(surveyText);
+
+        // Load geographic data
+        const stateOverallResponse = await fetch('arcgis_state_overall.csv');
+        const stateOverallText = await stateOverallResponse.text();
+        geoStateOverall = parseCSV(stateOverallText);
+
+        const stateByEventResponse = await fetch('arcgis_state_by_event.csv');
+        const stateByEventText = await stateByEventResponse.text();
+        geoStateByEvent = parseCSV(stateByEventText);
+
+        const cityOverallResponse = await fetch('arcgis_city_overall.csv');
+        const cityOverallText = await cityOverallResponse.text();
+        geoCityOverall = parseCSV(cityOverallText);
+
+        const cityByEventResponse = await fetch('arcgis_city_by_event.csv');
+        const cityByEventText = await cityByEventResponse.text();
+        geoCityByEvent = parseCSV(cityByEventText);
+
         initializeCharts();
     } catch (error) {
         console.error('Error loading data:', error);
@@ -120,6 +144,14 @@ function initializeCharts() {
     createTechnicianInterestChart();
     createTechnicianByTypeChart();
     createTechnicianImplementationChart();
+
+    // Geographic charts
+    createStateDistributionChart();
+    createInternationalChart();
+    createStateTrendsChart();
+    createCityDistributionChart();
+    createSDRegionalChart();
+    createCityByYearChart();
 }
 
 // Chart 1: Attendance Over Time
@@ -1188,5 +1220,450 @@ function createTechnicianImplementationChart() {
             }
         },
         plugins: [ChartDataLabels]
+    });
+}
+
+// ========================================
+// GEOGRAPHIC CHARTS
+// ========================================
+
+// Chart 19: State Distribution
+function createStateDistributionChart() {
+    // Get top 10 states (excluding blank entries)
+    const states = geoStateOverall
+        .filter(row => row.state && row.State_Name && row.State_Name !== '')
+        .slice(0, 10);
+
+    const ctx = document.getElementById('stateDistributionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: states.map(s => s.State_Name || s.state),
+            datasets: [{
+                label: 'Ticket Registrations',
+                data: states.map(s => parseInt(s.Count)),
+                backgroundColor: COLORS.primary,
+                borderColor: COLORS.accent,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                datalabels: {
+                    anchor: 'end',
+                    align: 'right',
+                    formatter: (value, context) => {
+                        const pct = states[context.dataIndex].Percentage;
+                        return value + ' (' + pct + '%)';
+                    },
+                    font: { weight: 'bold', size: 11 }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Number of Attendees' },
+                    beginAtZero: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+}
+
+// Chart 20: International Attendance
+function createInternationalChart() {
+    // Country code to full name mapping
+    const countryNames = {
+        'CZ': 'Czech Republic',
+        'FJ': 'Fiji',
+        'MA': 'Morocco',
+        'BE': 'Belgium',
+        'HU': 'Hungary',
+        'HK': 'Hong Kong',
+        'GR': 'Greece',
+        'IN': 'India',
+        'NI': 'Nicaragua',
+        'UA': 'Ukraine',
+        'EG': 'Egypt',
+        'CA': 'Canada'
+    };
+
+    // Get non-USA countries
+    const international = geoStateOverall.filter(row => row.Country && row.Country !== 'USA');
+
+    // Group by country with full names
+    const countryData = {};
+    international.forEach(row => {
+        const countryCode = row.Country;
+        const countryName = countryNames[countryCode] || countryCode;
+        if (!countryData[countryName]) {
+            countryData[countryName] = 0;
+        }
+        countryData[countryName] += parseInt(row.Count);
+    });
+
+    const countries = Object.entries(countryData).sort((a, b) => b[1] - a[1]);
+
+    const ctx = document.getElementById('internationalChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: countries.map(c => c[0]),
+            datasets: [{
+                data: countries.map(c => c[1]),
+                backgroundColor: [
+                    COLORS.primary, COLORS.accent, COLORS.orange, COLORS.brown,
+                    COLORS.blue, COLORS.purple, COLORS.paleGreen, COLORS.yellow,
+                    COLORS.red, COLORS.darkGreen, COLORS.tan
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                datalabels: {
+                    formatter: (value, context) => {
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return label + '\n' + value;
+                    },
+                    font: { weight: 'bold', size: 9 },
+                    color: '#fff'
+                },
+                title: {
+                    display: true,
+                    text: countries.reduce((sum, c) => sum + c[1], 0) + ' ticket registrations from ' + countries.length + ' countries',
+                    font: { size: 11 },
+                    padding: { top: 5, bottom: 10 }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+}
+
+// Chart 21: State Trends Over Time
+function createStateTrendsChart() {
+    const topStates = ['South Dakota', 'Missouri', 'Minnesota', 'Nebraska', 'North Dakota', 'Iowa'];
+    const years = ['2022 Soil Health Conference', '2023 Soil Health Conference', '2024 Soil Health Conference', '2025 Soil Health Conference'];
+
+    const datasets = topStates.map((state, idx) => {
+        const data = years.map(year => {
+            const record = geoStateByEvent.find(row =>
+                row.event === year && row.State_Name === state
+            );
+            return record ? parseInt(record.Count) : 0;
+        });
+
+        return {
+            label: state,
+            data: data,
+            borderColor: [COLORS.primary, COLORS.orange, COLORS.accent, COLORS.brown, COLORS.blue, COLORS.purple][idx],
+            backgroundColor: [COLORS.primary, COLORS.orange, COLORS.accent, COLORS.brown, COLORS.blue, COLORS.purple][idx] + '33',
+            borderWidth: 3,
+            fill: false,
+            tension: 0.4,
+            pointRadius: 5,
+            pointBackgroundColor: [COLORS.primary, COLORS.orange, COLORS.accent, COLORS.brown, COLORS.blue, COLORS.purple][idx],
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+        };
+    });
+
+    const ctx = document.getElementById('stateTrendsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: years.map(y => y.replace(' Soil Health Conference', '')),
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                datalabels: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Number of Attendees' }
+                }
+            }
+        }
+    });
+}
+
+// Chart 22: Top Cities
+function createCityDistributionChart() {
+    // Get top 15 cities (excluding blank)
+    const cities = geoCityOverall
+        .filter(row => row.City && row.City !== '')
+        .slice(0, 15);
+
+    const ctx = document.getElementById('cityDistributionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: cities.map(c => {
+                const location = c.Full_Location || (c.City + ', ' + c.State);
+                return location.replace(', USA', '');
+            }),
+            datasets: [{
+                label: 'Ticket Registrations',
+                data: cities.map(c => parseInt(c.Count)),
+                backgroundColor: COLORS.accent,
+                borderColor: COLORS.primary,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                datalabels: {
+                    anchor: 'end',
+                    align: 'right',
+                    formatter: (value, context) => {
+                        const pct = cities[context.dataIndex].Percentage;
+                        return value + ' (' + pct + '%)';
+                    },
+                    font: { weight: 'bold', size: 10 }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Number of Attendees' },
+                    beginAtZero: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+}
+
+// Chart 23: South Dakota Regional Distribution (Bubble Map)
+function createSDRegionalChart() {
+    // Get top 20 SD cities for bubble map
+    const sdCities = geoCityOverall
+        .filter(row => row.State === 'SD' && row.City && row.City !== '')
+        .slice(0, 20);
+
+    // Approximate coordinates for SD cities (relative positions for visualization)
+    const cityCoords = {
+        'Brookings': {x: 7, y: 5},
+        'Wentworth': {x: 7.5, y: 5.5},
+        'LaBolt': {x: 8, y: 4},
+        'Webster': {x: 7, y: 3},
+        'Clear Lake': {x: 7.5, y: 4.5},
+        'Sioux Falls': {x: 7, y: 6},
+        'Oacoma': {x: 4, y: 5},
+        'Revillo': {x: 8, y: 4.5},
+        'Salem': {x: 7.2, y: 5.8},
+        'Watertown': {x: 8, y: 4.2},
+        'Rapid City': {x: 1, y: 4},
+        'Gettysburg': {x: 5, y: 4},
+        'Pierre': {x: 3.5, y: 4.5},
+        'Aberdeen': {x: 7, y: 2.5},
+        'Gary': {x: 7.8, y: 4.8},
+        'Groton': {x: 7.5, y: 3},
+        'Parkston': {x: 6, y: 6},
+        'Platte': {x: 6.5, y: 6.5},
+        'Redfield': {x: 6.5, y: 4},
+        'Aurora': {x: 6.5, y: 5}
+    };
+
+    const bubbleData = sdCities.map(city => {
+        const coords = cityCoords[city.City] || {x: 5, y: 5};
+        const count = parseInt(city.Count);
+        return {
+            x: coords.x,
+            y: coords.y,
+            r: Math.sqrt(count) * 2, // Scale radius based on attendance
+            city: city.City,
+            count: count
+        };
+    });
+
+    // Plugin to draw basemap background with geographic references
+    const basemapPlugin = {
+        id: 'basemapBackground',
+        beforeDraw: (chart) => {
+            if (!chart.chartArea) return; // Safety check
+
+            const ctx = chart.ctx;
+            const chartArea = chart.chartArea;
+            const {left, right, top, bottom} = chartArea;
+            const width = right - left;
+            const height = bottom - top;
+
+            // Save context state
+            ctx.save();
+
+            // Draw light background
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(left, top, width, height);
+
+            // Draw grid lines for geographic reference
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+
+            // Vertical lines (longitude)
+            for (let i = 1; i < 10; i++) {
+                const x = left + (width * i / 10);
+                ctx.beginPath();
+                ctx.moveTo(x, top);
+                ctx.lineTo(x, bottom);
+                ctx.stroke();
+            }
+
+            // Horizontal lines (latitude)
+            for (let i = 1; i < 8; i++) {
+                const y = top + (height * i / 8);
+                ctx.beginPath();
+                ctx.moveTo(left, y);
+                ctx.lineTo(right, y);
+                ctx.stroke();
+            }
+
+            ctx.setLineDash([]);
+
+            // Draw region labels
+            ctx.fillStyle = '#999';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // West region
+            ctx.fillText('West', left + width * 0.15, top + height * 0.5);
+            // Central region
+            ctx.fillText('Central', left + width * 0.45, top + height * 0.5);
+            // East region
+            ctx.fillText('East', left + width * 0.75, top + height * 0.5);
+
+            // Add border
+            ctx.strokeStyle = '#ccc';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(left, top, width, height);
+
+            // Restore context state
+            ctx.restore();
+        }
+    };
+
+    const ctx = document.getElementById('sdRegionalChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                label: 'SD Cities',
+                data: bubbleData,
+                backgroundColor: COLORS.primary + '80',
+                borderColor: COLORS.darkBlue,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            animation: {
+                duration: 750
+            },
+            plugins: {
+                basemapBackground: {
+                    enabled: true
+                },
+                datalabels: {
+                    anchor: 'center',
+                    align: 'center',
+                    formatter: (value) => {
+                        return value.count > 15 ? value.city + '\n' + value.count : value.count;
+                    },
+                    font: { weight: 'bold', size: 9 },
+                    color: '#fff'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const data = context.raw;
+                            return data.city + ': ' + data.count + ' attendees';
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Bubble size represents ticket registrations',
+                    font: { size: 10, style: 'italic' },
+                    padding: { bottom: 10 }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                    min: 0,
+                    max: 10
+                },
+                y: {
+                    display: false,
+                    min: 0,
+                    max: 8
+                }
+            }
+        },
+        plugins: [basemapPlugin, ChartDataLabels]
+    });
+}
+
+// Chart 24: Top Cities by Year
+function createCityByYearChart() {
+    const topCities = ['Brookings', 'Wentworth', 'LaBolt', 'Webster', 'Clear Lake', 'Sioux Falls'];
+    const years = ['2022 Soil Health Conference', '2023 Soil Health Conference', '2024 Soil Health Conference', '2025 Soil Health Conference'];
+
+    const yearLabels = years.map(y => y.replace(' Soil Health Conference', ''));
+
+    const datasets = topCities.map((city, idx) => ({
+        label: city,
+        data: years.map(year => {
+            const record = geoCityByEvent.find(row =>
+                row.Event === year && row.City === city
+            );
+            return record ? parseInt(record.Count) : 0;
+        }),
+        backgroundColor: [COLORS.primary, COLORS.accent, COLORS.orange, COLORS.brown, COLORS.blue, COLORS.purple][idx],
+        borderWidth: 1,
+        borderColor: '#fff'
+    }));
+
+    const ctx = document.getElementById('cityByYearChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: yearLabels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                x: { stacked: true },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    title: { display: true, text: 'Number of Attendees' }
+                }
+            },
+            plugins: {
+                datalabels: { display: false }
+            }
+        }
     });
 }
