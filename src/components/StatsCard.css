@@ -4,9 +4,10 @@
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 140px;
 }
 
 .stats-card:hover {
@@ -21,10 +22,13 @@
 .stats-card-icon {
   font-size: 48px;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .stats-card-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .stats-card-title {
@@ -34,13 +38,17 @@
   color: #666;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
 }
 
 .stats-card-value {
-  margin: 0 0 4px 0;
-  font-size: 28px;
+  margin: 0 0 8px 0;
+  font-size: 32px;
   font-weight: 700;
   color: #333;
+  line-height: 1.1;
 }
 
 .stats-card.highlighted .stats-card-value {
@@ -49,6 +57,7 @@
 
 .stats-card-subtitle {
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   color: #888;
+  line-height: 1.3;
 }

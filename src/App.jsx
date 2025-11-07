@@ -96,36 +96,44 @@ function App() {
       </header>
 
       {/* Hero Stats */}
-      <section style={{ background: 'white', padding: '40px 0', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)' }}>
+      <section style={{ background: 'white', padding: '20px 0 16px 0', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)' }}>
         <div className="dashboard-content">
           <div className="stats-grid">
             <StatsCard
               title="Likely to Implement"
               value="97%"
-              subtitle="278 of 287 respondents"
+              subtitle="278 of 287 respondents likely or very likely to make changes to operations"
               icon="🌱"
-              highlighted={true}
             />
             <StatsCard
               title="High Satisfaction"
               value="91%"
-              subtitle="291 of 319 responses"
+              subtitle="291 of 319 respondents ranked ≥4 out of 5 stars"
               icon="⭐"
-              highlighted={true}
             />
             <StatsCard
               title="Total Registrations"
               value="1,307+"
-              subtitle="2022-2025"
+              subtitle="from years 2022-2025"
               icon="🎟️"
             />
             <StatsCard
               title="Knowledge Gain"
               value="85%"
-              subtitle="270 of 319 responses"
+              subtitle="270 of 319 respondents ranked ≥3 out of 4 stars"
               icon="📚"
             />
           </div>
+          <p style={{
+            marginTop: '12px',
+            marginBottom: '0',
+            fontSize: '12px',
+            color: '#666',
+            fontStyle: 'italic',
+            textAlign: 'center'
+          }}>
+            Note: Registration and attendance numbers may not reflect all attendees such as students, youth, and walk-ins
+          </p>
         </div>
       </section>
 

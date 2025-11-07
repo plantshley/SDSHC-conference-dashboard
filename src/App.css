@@ -34,7 +34,7 @@ body {
   background-size: 700% 100%;
   animation: gradientShift 20s linear infinite;
   color: white;
-  padding: 24px 0;
+  padding: 40px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
@@ -45,6 +45,15 @@ body {
   }
   100% {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
@@ -59,7 +68,7 @@ body {
 }
 
 .header-logo {
-  height: 65px;
+  height: 80px;
   width: auto;
 }
 
@@ -69,8 +78,8 @@ body {
 }
 
 .dashboard-header h1 {
-  margin: 0 0 8px 0;
-  font-size: 32px;
+  margin: 0 0 10px 0;
+  font-size: 36px;
   font-weight: 700;
 }
 
@@ -137,7 +146,7 @@ body {
 
 .subtitle {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   opacity: 0.9;
   font-weight: 400;
 }
@@ -150,6 +159,72 @@ body {
 
 .coalition-link:hover {
   opacity: 1;
+}
+
+.metrics-link-group {
+  position: relative;
+  display: inline-block;
+}
+
+.metrics-link-group a {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.metrics-link-group a:hover {
+  color: #1565C0 !important;
+}
+
+.metrics-emoji {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 24px;
+  transition: all 0.5s ease;
+  transform: scale(0.8);
+}
+
+.metrics-link-group a:hover .metrics-emoji {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.metrics-emoji-1 {
+  left: -40px;
+  top: 3px;
+}
+
+.metrics-link-group a:hover .metrics-emoji-1 {
+  transform: scale(1.1) rotate(-10deg) translateY(-12px);
+}
+
+.metrics-emoji-2 {
+  left: -60px;
+  top: 0;
+}
+
+.metrics-link-group a:hover .metrics-emoji-2 {
+  transform: scale(1.1) rotate(-20deg) translateX(-12px);
+}
+
+.metrics-emoji-3 {
+  right: -40px;
+  top: 3px;
+}
+
+.metrics-link-group a:hover .metrics-emoji-3 {
+  transform: scale(1.1) rotate(10deg) translateY(-10px);
+}
+
+.metrics-emoji-4 {
+  right: -60px;
+  top: 0;
+}
+
+.metrics-link-group a:hover .metrics-emoji-4 {
+  transform: scale(1.1) rotate(20deg) translateX(15px);
 }
 
 .dashboard-content {
