@@ -12,9 +12,11 @@ export default function ImpactSection({ surveyData }) {
     }
   })
 
+  const implementationTotal = Object.values(implementationCounts).reduce((a, b) => a + b, 0)
   const implementationData = Object.entries(implementationCounts).map(([score, count]) => ({
     score: `${score} - ${{ 1: 'Unlikely', 2: 'Maybe', 3: 'Likely', 4: 'Very Likely' }[score]}`,
-    count
+    count,
+    percentage: ((count / implementationTotal) * 100).toFixed(1)
   }))
 
   // Satisfaction distribution
@@ -25,9 +27,11 @@ export default function ImpactSection({ surveyData }) {
     }
   })
 
+  const satisfactionTotal = Object.values(satisfactionCounts).reduce((a, b) => a + b, 0)
   const satisfactionData = Object.entries(satisfactionCounts).map(([stars, count]) => ({
     stars: `${stars} ${stars === '1' ? 'Star' : 'Stars'}`,
-    count
+    count,
+    percentage: ((count / satisfactionTotal) * 100).toFixed(1)
   }))
 
   // Knowledge gain distribution
@@ -38,9 +42,11 @@ export default function ImpactSection({ surveyData }) {
     }
   })
 
+  const knowledgeTotal = Object.values(knowledgeCounts).reduce((a, b) => a + b, 0)
   const knowledgeData = Object.entries(knowledgeCounts).map(([score, count]) => ({
     score: `${score} - ${{ 1: 'Little', 2: 'Some', 3: 'Good', 4: 'Excellent' }[score]}`,
-    count
+    count,
+    percentage: ((count / knowledgeTotal) * 100).toFixed(1)
   }))
 
   // Satisfaction vs Knowledge scatter
@@ -54,10 +60,12 @@ export default function ImpactSection({ surveyData }) {
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
+      const data = payload[0].payload
       return (
         <div className="custom-tooltip">
-          <p className="tooltip-title"><strong>{payload[0].payload.score || payload[0].payload.stars}</strong></p>
+          <p className="tooltip-title"><strong>{data.score || data.stars}</strong></p>
           <p style={{ color: '#42A5F5' }}>Count: {payload[0].value}</p>
+          <p style={{ color: '#42A5F5' }}>Percentage: {data.percentage}%</p>
         </div>
       )
     }
@@ -68,24 +76,21 @@ export default function ImpactSection({ surveyData }) {
     <section>
       <h2>Impact Metrics</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
         {/* Implementation Likelihood */}
         <div className="chart-section">
-          <h3>Implementation Likelihood</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={implementationData} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
+          <h3>Implementation Likelihood (total)</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={implementationData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="score"
-                angle={-15}
-                textAnchor="end"
-                height={80}
                 style={{ fontSize: '11px' }}
               />
               <YAxis
-                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
                 style={{ fontSize: '11px' }}
-                width={70}
+                width={60}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="count" fill="#90CAF9" name="Responses" />
@@ -95,79 +100,43 @@ export default function ImpactSection({ surveyData }) {
 
         {/* Satisfaction Distribution */}
         <div className="chart-section">
-          <h3>Satisfaction Rating Distribution</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={satisfactionData} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
+          <h3>Satisfaction Rating (total)</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={satisfactionData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="stars"
                 style={{ fontSize: '11px' }}
               />
               <YAxis
-                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
                 style={{ fontSize: '11px' }}
-                width={70}
+                width={60}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="count" fill="#BA68C8" name="Responses" />
             </BarChart>
           </ResponsiveContainer>
         </div>
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
         {/* Knowledge Gain Distribution */}
         <div className="chart-section">
-          <h3>Knowledge Gain Distribution</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={knowledgeData} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
+          <h3>Knowledge Gain (total)</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={knowledgeData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="score"
-                angle={-15}
-                textAnchor="end"
-                height={80}
                 style={{ fontSize: '11px' }}
               />
               <YAxis
-                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                label={{ value: 'Number of Responses', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
                 style={{ fontSize: '11px' }}
-                width={70}
+                width={60}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="count" fill="#F48FB1" name="Responses" />
             </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Satisfaction vs Knowledge Scatter */}
-        <div className="chart-section">
-          <h3>Satisfaction vs Knowledge Gain</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <ScatterChart margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                type="number"
-                dataKey="satisfaction"
-                name="Satisfaction"
-                domain={[0, 6]}
-                label={{ value: 'Satisfaction Rating (1-5)', position: 'insideBottom', offset: -5 }}
-                style={{ fontSize: '11px' }}
-              />
-              <YAxis
-                type="number"
-                dataKey="knowledge"
-                name="Knowledge"
-                domain={[0, 5]}
-                label={{ value: 'Knowledge Gain (1-4)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
-                style={{ fontSize: '11px' }}
-                width={70}
-              />
-              <ZAxis range={[60, 60]} />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 600 }} />
-              <Scatter name="Responses" data={scatterData} fill="#9FA8DA" fillOpacity={0.6} />
-            </ScatterChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -194,8 +163,8 @@ export default function ImpactSection({ surveyData }) {
             <strong style={{ color: '#1976D2' }}>Strong Correlations:</strong> Knowledge gained, satisfaction, and implementation intention are all very strongly correlated (p &lt; 0.001)
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
-            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌱</span>
-            <strong style={{ color: '#1976D2' }}>Opportunity for Advancement:</strong> Knowledge ratings moderate (85%), suggesting opportunity for deeper, more advanced content
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🎓</span>
+            <strong style={{ color: '#1976D2' }}>Knowledge by Attendee Type:</strong> Land managers/owners are more likely to have a higher knowledge gained rating than technical professionals
           </li>
         </ul>
       </div>

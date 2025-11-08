@@ -179,9 +179,9 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
                 style={{ fontSize: '11px' }}
               />
               <YAxis
-                label={{ value: 'Number of Attendees', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                label={{ value: 'Number of Attendees', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
                 style={{ fontSize: '11px' }}
-                width={70}
+                width={60}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 600 }} />

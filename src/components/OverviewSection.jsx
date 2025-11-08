@@ -56,9 +56,9 @@ export default function OverviewSection({ surveyData }) {
               style={{ fontSize: '14px' }}
             />
             <YAxis
-              label={{ value: 'Number of People', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+              label={{ value: 'Number of People', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
               style={{ fontSize: '11px' }}
-              width={70}
+              width={60}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend
