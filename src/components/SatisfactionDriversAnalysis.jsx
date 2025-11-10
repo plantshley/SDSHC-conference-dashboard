@@ -251,17 +251,17 @@ export default function SatisfactionDriversAnalysis({ surveyData }) {
         <div className="chart-section">
           <h4 style={{ fontSize: '16px', marginBottom: '12px' }}>Average Ratings by Attendee Type</h4>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={typeData} margin={{ top: 5, right: 5, left: 10, bottom: 40 }} layout="horizontal" barCategoryGap="20%">
+            <BarChart data={typeData} margin={{ top: 5, right: 5, left: 10, bottom: 10 }} layout="horizontal" barCategoryGap="20%">
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="type"
                 interval={0}
-                height={60}
+                height={50}
                 tick={<CustomXAxisTick />}
               />
               <YAxis
                 domain={[0, 5]}
-                label={{ value: 'Rating (Knowledge: /4, Satisfaction: /5)', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle', fontSize: '13px' } }}
+                label={{ value: 'Rating (Knowledge: /4, Satisfaction: /5)', angle: -90, position: 'insideLeft', offset: 15, style: { textAnchor: 'middle', fontSize: '13px' } }}
                 style={{ fontSize: '11px' }}
                 width={70}
               />
