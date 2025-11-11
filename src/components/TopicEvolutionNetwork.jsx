@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
-
-const COLORS = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3', '#DA70D6', '#EE82EE', '#FF69B4', '#FF1493', '#FF6347', '#FA8072', '#FFB347', '#F0E68C', '#9ACD32', '#90EE90', '#00FA9A']
+import { useState } from 'react'
+import { getTopicColor } from '../constants/topicColors'
+import './TopicEvolutionNetwork.css'
 
 export default function TopicEvolutionNetwork({ surveyData }) {
   const [selectedYear, setSelectedYear] = useState('all')
-  const width = 800
-  const height = 500
+  const [hoveredNode, setHoveredNode] = useState(null)
+  const width = 1100
+  const height = 700
 
   // Extract topic co-occurrences
   const getTopicData = () => {
@@ -72,30 +73,39 @@ export default function TopicEvolutionNetwork({ surveyData }) {
     const cols = Math.ceil(Math.sqrt(rawNodes.length))
     const row = Math.floor(i / cols)
     const col = i % cols
-    const spacingX = (width - 200) / (cols + 1)
-    const spacingY = (height - 150) / (Math.ceil(rawNodes.length / cols) + 1)
+    const spacingX = (width - 150) / (cols + 1)
+    const spacingY = (height - 100) / (Math.ceil(rawNodes.length / cols) + 1)
 
     return {
       ...node,
-      x: 100 + spacingX * (col + 1),
-      y: 75 + spacingY * (row + 1)
+      x: 75 + spacingX * (col + 1),
+      y: 50 + spacingY * (row + 1)
     }
   })
 
   // Get node radius based on count
   const getNodeRadius = (count) => {
-    if (nodes.length === 0) return 20
+    if (nodes.length === 0) return 30
     const maxCount = Math.max(...nodes.map(n => n.count))
-    return 12 + (count / maxCount) * 18
+    return 20 + (count / maxCount) * 25
   }
 
   // Get edge width based on co-occurrence count
   const getEdgeWidth = (count) => {
     const maxCount = Math.max(...edges.map(e => e.count), 1)
-    return 1 + (count / maxCount) * 4
+    return 1 + (count / maxCount) * 8
   }
 
-  const years = ['all', ...new Set(surveyData.map(row => String(row.year)).filter(y => y))].sort()
+  // Get edge color - grey gradient based on strength
+  const getEdgeColor = (count) => {
+    const maxCount = Math.max(...edges.map(e => e.count), 1)
+    const intensity = count / maxCount
+    // From light grey (#ddd) to dark grey (#666) based on strength
+    const greyValue = Math.round(221 - (221 - 102) * intensity)
+    return `rgb(${greyValue}, ${greyValue}, ${greyValue})`
+  }
+
+  const years = ['all', ...new Set(surveyData.map(row => String(row.year)).filter(y => y && y !== 'null'))].sort()
 
   return (
     <div className="chart-section" style={{ marginTop: '24px' }}>
@@ -104,25 +114,17 @@ export default function TopicEvolutionNetwork({ surveyData }) {
         Shows which topics are mentioned together. Node size represents topic frequency, edge thickness shows co-mention strength.
       </p>
 
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ marginRight: '8px', fontWeight: 600 }}>Filter by Year:</label>
+      <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         {years.map(year => (
           <button
             key={year}
             onClick={() => setSelectedYear(year)}
-            style={{
-              padding: '8px 16px',
-              margin: '4px',
-              background: selectedYear === year ? '#6A5ACD' : '#f5f5f5',
-              color: selectedYear === year ? 'white' : '#333',
-              border: selectedYear === year ? '2px solid #6A5ACD' : '2px solid #ddd',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: selectedYear === year ? 600 : 400,
-              transition: 'all 0.2s'
-            }}
+            className={`year-filter-btn ${selectedYear === year ? 'active' : ''}`}
           >
-            {year === 'all' ? 'All Years' : year}
+            <div className="year-filter-btn-inner">
+              {year === 'all' ? 'All Years' : year}
+              <div className="year-filter-btn-shine" />
+            </div>
           </button>
         ))}
       </div>
@@ -132,11 +134,31 @@ export default function TopicEvolutionNetwork({ surveyData }) {
           No sufficient topic co-occurrence data for selected year
         </div>
       ) : (
-        <div style={{ position: 'relative', overflow: 'visible' }}>
+        <div style={{ position: 'relative', overflow: 'visible', display: 'flex', justifyContent: 'center' }}>
+          {hoveredNode && (
+            <div style={{
+              position: 'absolute',
+              top: hoveredNode.y - 60,
+              left: hoveredNode.x - (width / 2),
+              background: 'white',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              border: '1px solid #e0e0e0',
+              pointerEvents: 'none',
+              zIndex: 1000,
+              fontSize: '13px',
+              fontWeight: 600
+            }}>
+              <div style={{ marginBottom: '4px', color: '#333' }}>{hoveredNode.id}</div>
+              <div style={{ color: '#666', fontSize: '12px' }}>{hoveredNode.count} mentions</div>
+            </div>
+          )}
           <svg
             width={width}
-            height={height}
-            style={{ border: '1px solid #e0e0e0', borderRadius: '8px', background: 'white' }}
+            height={520}
+            viewBox="0 120 1100 520"
+            style={{ background: 'white', borderRadius: '8px' }}
           >
             {/* Draw edges */}
             <g>
@@ -152,10 +174,12 @@ export default function TopicEvolutionNetwork({ surveyData }) {
                     y1={source.y}
                     x2={target.x}
                     y2={target.y}
-                    stroke="#ccc"
+                    stroke={getEdgeColor(edge.count)}
                     strokeWidth={getEdgeWidth(edge.count)}
-                    opacity={0.6}
-                  />
+                    opacity={0.7}
+                  >
+                    <title>{`${edge.source} & ${edge.target}: ${edge.count} co-occurrences`}</title>
+                  </line>
                 )
               })}
             </g>
@@ -164,7 +188,7 @@ export default function TopicEvolutionNetwork({ surveyData }) {
             <g>
               {nodes.map((node, i) => {
                 const radius = getNodeRadius(node.count)
-                const color = COLORS[i % COLORS.length]
+                const color = getTopicColor(node.id, i)
 
                 return (
                   <g key={node.id}>
@@ -173,22 +197,22 @@ export default function TopicEvolutionNetwork({ surveyData }) {
                       cy={node.y}
                       r={radius}
                       fill={color}
-                      opacity={0.8}
+                      opacity={0.85}
                       stroke="white"
-                      strokeWidth={2}
-                    >
-                      <title>{`${node.id}: ${node.count} mentions`}</title>
-                    </circle>
+                      strokeWidth={3}
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setHoveredNode(node)}
+                      onMouseLeave={() => setHoveredNode(null)}
+                    />
                     <text
                       x={node.x}
                       y={node.y}
                       textAnchor="middle"
                       dominantBaseline="middle"
-                      fontSize="10px"
-                      fontWeight="600"
+                      fontSize="16px"
+                      fontWeight="700"
                       fill="white"
                       pointerEvents="none"
-                      style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
                     >
                       {node.count}
                     </text>
@@ -201,24 +225,24 @@ export default function TopicEvolutionNetwork({ surveyData }) {
             <g>
               {nodes.map((node) => {
                 const radius = getNodeRadius(node.count)
-                const labelWidth = node.label.length * 6 + 8
+                const labelWidth = node.label.length * 7 + 10
                 return (
                   <g key={`label-${node.id}`}>
                     {/* White background for better readability */}
                     <rect
                       x={node.x - labelWidth / 2}
-                      y={node.y + radius + 3}
+                      y={node.y + radius + 4}
                       width={labelWidth}
-                      height={16}
+                      height={18}
                       fill="white"
                       fillOpacity={0.95}
                       rx={3}
                     />
                     <text
                       x={node.x}
-                      y={node.y + radius + 14}
+                      y={node.y + radius + 16}
                       textAnchor="middle"
-                      fontSize="10px"
+                      fontSize="11px"
                       fontWeight="600"
                       fill="#333"
                     >
@@ -232,7 +256,7 @@ export default function TopicEvolutionNetwork({ surveyData }) {
         </div>
       )}
 
-      <div style={{ marginTop: '16px', padding: '12px', background: '#f5f5f5', borderRadius: '8px' }}>
+      <div style={{ marginTop: '8px', padding: '12px', background: '#f5f5f5', borderRadius: '8px' }}>
         <p style={{ fontSize: '13px', margin: '4px 0' }}>
           <strong>How to read:</strong> Each circle represents a topic (size = frequency).
           Lines connect topics mentioned together by attendees (thickness = co-mention frequency).

@@ -1,8 +1,7 @@
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
 import TopicInterestHeatmap from './TopicInterestHeatmap'
 import TopicEvolutionNetwork from './TopicEvolutionNetwork'
-
-const COLORS = ['#90CAF9', '#BA68C8', '#F48FB1', '#9FA8DA', '#CE93D8', '#FF80AB', '#81D4FA', '#5C6BC0']
+import { getTopicColor, darkenColor } from '../constants/topicColors'
 
 export default function TopicsSection({ surveyData }) {
   // Count topic interests from Interest_Categories (semicolon-separated)
@@ -18,17 +17,26 @@ export default function TopicsSection({ surveyData }) {
     }
   })
 
+  const totalResponses = surveyData.length
+
   const topicPopularityData = Object.entries(topicCounts)
-    .map(([topic, count]) => ({ topic, count }))
+    .map(([topic, count]) => ({
+      topic,
+      count,
+      percentage: ((count / totalResponses) * 100).toFixed(1)
+    }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 10) // Top 10 topics
+    .slice(0, 12) // Top 12 topics
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
+      const data = payload[0].payload
+      const topicColor = getTopicColor(data.topic, topicPopularityData.findIndex(t => t.topic === data.topic))
+      const darkColor = darkenColor(topicColor)
       return (
         <div className="custom-tooltip">
-          <p className="tooltip-title"><strong>{payload[0].payload.topic}</strong></p>
-          <p style={{ color: '#42A5F5' }}>Interest: {payload[0].value} responses</p>
+          <p className="tooltip-title" style={{ color: darkColor }}><strong>{data.topic}</strong></p>
+          <p style={{ color: darkColor, fontWeight: 500 }}>{data.count} mentions ({data.percentage}%)</p>
         </div>
       )
     }
@@ -41,24 +49,24 @@ export default function TopicsSection({ surveyData }) {
 
       <div className="chart-section">
         <h3>Topic Popularity</h3>
-        <ResponsiveContainer width="100%" height={450}>
-          <BarChart data={topicPopularityData} margin={{ top: 5, right: 30, left: 70, bottom: 40 }} layout="vertical">
+        <ResponsiveContainer width="100%" height={500}>
+          <BarChart data={topicPopularityData} margin={{ top: 5, right: 30, left: 80, bottom: 40 }} layout="vertical" barSize={45} barCategoryGap={5}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               type="number"
-              label={{ value: 'Number of Interested Respondents', position: 'insideBottom', offset: -5 }}
+              label={{ value: '% of Respondents', position: 'insideBottom', offset: -5 }}
               style={{ fontSize: '11px' }}
             />
             <YAxis
               type="category"
               dataKey="topic"
-              width={150}
-              style={{ fontSize: '11px' }}
+              width={250}
+              style={{ fontSize: '13px' }}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="count" name="Interest Level">
+            <Bar dataKey="percentage" name="Interest Level">
               {topicPopularityData.map((entry, index) => (
-                <Bar key={index} dataKey="count" fill={COLORS[index % COLORS.length]} />
+                <Cell key={`cell-${index}`} fill={getTopicColor(entry.topic, index)} />
               ))}
             </Bar>
           </BarChart>
