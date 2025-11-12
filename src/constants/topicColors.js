@@ -3,20 +3,20 @@
 export const TOPIC_COLORS = {
   'Other Topics': '#87CEEB',               // Sky blue
   'Livestock Integration & Grazing': '#6A5ACD',  // Slate blue
-  'Cover Crops': '#9370DB',                // Medium purple (same as India in pie chart)
+  'Cover Crops': '#9370DB',                // Medium purple
   'Soil Biology & Microbiology': '#BA55D3', // Medium orchid
   'Economics & Financial': '#DA70D6',      // Orchid
   'Regenerative & Organic Ag': '#EE82EE',  // Violet
   'Nutrient Management': '#FF69B4',        // Hot pink
   'No-Till & Reduced Tillage': '#FF1493',  // Deep pink
   'Soil Challenges': '#FF6347',            // Tomato red
-  'Diverse Cropping Systems': '#FA8072',   // Salmon
-  'Producer Case Studies & Stories': '#FA8072', // Salmon
-  'Water Management': '#FA8072',           // Salmon
-  'Carbon & Climate': '#F0E68C',           // Khaki (yellow - Egypt)
-  'Health Connections': '#F0E68C',         // Khaki (yellow - Egypt)
-  'Compost & Amendments': '#FFB347',       // Orange (Nicaragua - same as "Other" attendee type)
-  'Soil Testing & Monitoring': '#9ACD32'   // Yellow green
+  'Diverse Cropping Systems': '#FA8072',   // Salmon/coral
+  'Compost & Amendments': '#FFB347',       // Orange
+  'Health Connections': '#F0E68C',         // Khaki yellow
+  'Producer Case Studies & Stories': '#BCD35F', // Lime green (more distinct from yellow)
+  'Water Management': '#B8E986',           // Light lime green
+  'Soil Testing & Monitoring': '#A8F0A8',  // Pale green
+  'Carbon & Climate': '#AFEEEE'            // Pale turquoise
 }
 
 // Fallback colors matching International Reach pie chart exactly

@@ -8,7 +8,7 @@ export default function TopicInterestHeatmap({ surveyData }) {
   surveyData.forEach(row => {
     if (row.Attendee_Type_Category && row.Interest_Categories) {
       const type = row.Attendee_Type_Category
-      const topics = row.Interest_Categories.split(';').map(t => t.trim()).filter(t => t)
+      const topics = row.Interest_Categories.split(';').map(t => t.trim()).filter(t => t && t !== 'NA')
 
       allTypes.add(type)
       typeTotals[type] = (typeTotals[type] || 0) + 1
@@ -21,7 +21,7 @@ export default function TopicInterestHeatmap({ surveyData }) {
     }
   })
 
-  // Get top 12 topics by total frequency
+  // Get all topics sorted by total frequency
   const topicCounts = {}
   Object.keys(topicsByType).forEach(key => {
     const [topic] = key.split('|')
@@ -30,7 +30,6 @@ export default function TopicInterestHeatmap({ surveyData }) {
 
   const topTopics = Object.entries(topicCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 12)
     .map(([topic]) => topic)
 
   const types = Array.from(allTypes).sort()

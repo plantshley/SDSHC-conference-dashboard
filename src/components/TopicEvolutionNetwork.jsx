@@ -20,7 +20,7 @@ export default function TopicEvolutionNetwork({ surveyData }) {
 
     filteredData.forEach(row => {
       if (row.Interest_Categories) {
-        const topics = row.Interest_Categories.split(';').map(t => t.trim()).filter(t => t)
+        const topics = row.Interest_Categories.split(';').map(t => t.trim()).filter(t => t && t !== 'NA')
 
         // Count individual topics
         topics.forEach(topic => {
@@ -37,8 +37,8 @@ export default function TopicEvolutionNetwork({ surveyData }) {
       }
     })
 
-    // Create nodes (topics with significant mentions)
-    const minMentions = 5
+    // Create nodes (all topics with mentions)
+    const minMentions = 1
     const nodes = Object.entries(topicCounts)
       .filter(([_, count]) => count >= minMentions)
       .map(([topic, count]) => ({
@@ -47,7 +47,7 @@ export default function TopicEvolutionNetwork({ surveyData }) {
         label: topic.length > 20 ? topic.substring(0, 20) + '...' : topic
       }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 12) // Top 12 topics for better spacing
+      // Show all topics
 
     const topicSet = new Set(nodes.map(n => n.id))
 
@@ -138,20 +138,28 @@ export default function TopicEvolutionNetwork({ surveyData }) {
           {hoveredNode && (
             <div style={{
               position: 'absolute',
-              top: hoveredNode.y - 60,
-              left: hoveredNode.x - (width / 2),
+              top: `${(hoveredNode.y - 120) * (520 / 520) - 80}px`,
+              left: `50%`,
+              transform: `translateX(calc(-50% + ${hoveredNode.x - (width / 2)}px))`,
               background: 'white',
-              padding: '8px 12px',
+              padding: '10px 14px',
               borderRadius: '6px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.2)',
               border: '1px solid #e0e0e0',
               pointerEvents: 'none',
               zIndex: 1000,
               fontSize: '13px',
-              fontWeight: 600
+              fontWeight: 600,
+              maxWidth: '320px',
+              whiteSpace: 'normal'
             }}>
-              <div style={{ marginBottom: '4px', color: '#333' }}>{hoveredNode.id}</div>
-              <div style={{ color: '#666', fontSize: '12px' }}>{hoveredNode.count} mentions</div>
+              <div style={{ marginBottom: '4px', color: '#333', fontWeight: 600 }}>{hoveredNode.id}</div>
+              <div style={{ color: '#666', fontSize: '12px', fontWeight: 400 }}>{hoveredNode.count} mentions</div>
+              {hoveredNode.id === 'Other Topics' && (
+                <div style={{ color: '#666', fontSize: '11px', marginTop: '6px', fontStyle: 'italic', fontWeight: 400, lineHeight: '1.4' }}>
+                  Includes gardening/urban ag, beginning farming/getting started, specialty crops & methods, etc.
+                </div>
+              )}
             </div>
           )}
           <svg
@@ -225,19 +233,8 @@ export default function TopicEvolutionNetwork({ surveyData }) {
             <g>
               {nodes.map((node) => {
                 const radius = getNodeRadius(node.count)
-                const labelWidth = node.label.length * 7 + 10
                 return (
                   <g key={`label-${node.id}`}>
-                    {/* White background for better readability */}
-                    <rect
-                      x={node.x - labelWidth / 2}
-                      y={node.y + radius + 4}
-                      width={labelWidth}
-                      height={18}
-                      fill="white"
-                      fillOpacity={0.95}
-                      rx={3}
-                    />
                     <text
                       x={node.x}
                       y={node.y + radius + 16}

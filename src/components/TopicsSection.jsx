@@ -10,7 +10,7 @@ export default function TopicsSection({ surveyData }) {
     if (row.Interest_Categories) {
       const topics = row.Interest_Categories.split(';').map(t => t.trim())
       topics.forEach(topic => {
-        if (topic) {
+        if (topic && topic !== 'NA') {
           topicCounts[topic] = (topicCounts[topic] || 0) + 1
         }
       })
@@ -26,7 +26,7 @@ export default function TopicsSection({ surveyData }) {
       percentage: ((count / totalResponses) * 100).toFixed(1)
     }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 12) // Top 12 topics
+    // Show all topics
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -37,6 +37,11 @@ export default function TopicsSection({ surveyData }) {
         <div className="custom-tooltip">
           <p className="tooltip-title" style={{ color: darkColor }}><strong>{data.topic}</strong></p>
           <p style={{ color: darkColor, fontWeight: 500 }}>{data.count} mentions ({data.percentage}%)</p>
+          {data.topic === 'Other Topics' && (
+            <p style={{ color: darkColor, fontSize: '11px', marginTop: '4px', fontStyle: 'italic', fontWeight: 400 }}>
+              Includes gardening/urban ag, beginning farming/getting started, specialty crops & methods, etc.
+            </p>
+          )}
         </div>
       )
     }
@@ -49,8 +54,8 @@ export default function TopicsSection({ surveyData }) {
 
       <div className="chart-section">
         <h3>Topic Popularity</h3>
-        <ResponsiveContainer width="100%" height={500}>
-          <BarChart data={topicPopularityData} margin={{ top: 5, right: 30, left: 80, bottom: 40 }} layout="vertical" barSize={45} barCategoryGap={5}>
+        <ResponsiveContainer width="100%" height={800}>
+          <BarChart data={topicPopularityData} margin={{ top: 5, right: 30, left: 80, bottom: 40 }} layout="vertical" barSize={40} barCategoryGap={10}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               type="number"
