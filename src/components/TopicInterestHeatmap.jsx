@@ -32,7 +32,7 @@ export default function TopicInterestHeatmap({ surveyData }) {
     .sort((a, b) => b[1] - a[1])
     .map(([topic]) => topic)
 
-  const types = Array.from(allTypes).sort()
+  const types = Array.from(allTypes).filter(type => type !== 'Unknown').sort()
 
   // Create heatmap matrix with percentages
   const heatmapData = topTopics.map(topic => {

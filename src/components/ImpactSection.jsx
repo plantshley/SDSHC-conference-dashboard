@@ -75,6 +75,9 @@ export default function ImpactSection({ surveyData }) {
   return (
     <section>
       <h2>Impact Metrics</h2>
+      <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#666', marginTop: '-12px', marginBottom: '20px' }}>
+        Counts and percentages based on survey response data
+      </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
         {/* Implementation Likelihood */}

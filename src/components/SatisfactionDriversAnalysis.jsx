@@ -119,19 +119,21 @@ export default function SatisfactionDriversAnalysis({ surveyData }) {
     }
   })
 
-  const typeData = Object.keys(statsByType).map(type => {
-    const satStats = calculateBoxStats(statsByType[type].satisfaction)
-    const knowStats = calculateBoxStats(statsByType[type].knowledge)
+  const typeData = Object.keys(statsByType)
+    .filter(type => type !== 'Unknown')
+    .map(type => {
+      const satStats = calculateBoxStats(statsByType[type].satisfaction)
+      const knowStats = calculateBoxStats(statsByType[type].knowledge)
 
-    return {
-      type: type.length > 20 ? type.substring(0, 20) + '...' : type,
-      fullType: type,
-      satMean: satStats.mean,
-      knowMean: knowStats.mean,
-      satMedian: satStats.median,
-      knowMedian: knowStats.median
-    }
-  }).sort((a, b) => b.satMean - a.satMean)
+      return {
+        type: type.length > 20 ? type.substring(0, 20) + '...' : type,
+        fullType: type,
+        satMean: satStats.mean,
+        knowMean: knowStats.mean,
+        satMedian: satStats.median,
+        knowMedian: knowStats.median
+      }
+    }).sort((a, b) => b.satMean - a.satMean)
 
   // Satisfaction vs Knowledge scatter data - group by combination
   const scatterCombinations = {}
@@ -261,8 +263,8 @@ export default function SatisfactionDriversAnalysis({ surveyData }) {
               />
               <YAxis
                 domain={[0, 5]}
-                label={{ value: 'Rating (Knowledge: /4, Satisfaction: /5)', angle: -90, position: 'insideLeft', offset: 15, style: { textAnchor: 'middle', fontSize: '13px' } }}
-                style={{ fontSize: '11px' }}
+                label={{ value: 'Rating (Knowledge: 1-4, Satisfaction: 1-5)', angle: -90, position: 'insideLeft', offset: 15, style: { textAnchor: 'middle', fontSize: '14px', fontWeight: 400 } }}
+                style={{ fontSize: '14px' }}
                 width={70}
               />
               <Tooltip content={<CustomTooltip />} />

@@ -1,4 +1,4 @@
-import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
+import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 // Map attendee types to colors matching the international reach chart legend order
 // Belgium pink, Canada blue, Czech purple, Egypt yellow, etc.
@@ -52,33 +52,46 @@ export default function AttendeeSegmentationMatrix({ surveyData }) {
 
   const scatterData = Object.values(segmentData)
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length > 0) {
-      // In ScatterChart with multiple Scatter components, we need to find the active one
-      // The payload contains all scatter series, but we want the one being hovered
-      const activePayload = payload.find(p => p.payload && p.payload.type) || payload[0]
+      const point = payload[0]?.payload
 
-      // Get the data point from the active payload
-      const point = activePayload.payload
+      if (!point || !point.type) return null
 
-      if (!point) return null
-
-      const type = point.type
       const knowledge = point.knowledge
+      const likelihood = point.likelihood
       const likelihoodLabel = point.likelihoodLabel
-      const count = point.count
 
-      const color = COLORS[type] || '#333'
-      const darkColor = darkenColor(color)
+      // Find all data points with the same knowledge and likelihood
+      const sameSegment = scatterData.filter(d =>
+        d.knowledge === knowledge && d.likelihood === likelihood
+      )
+
+      // Calculate total count for this segment
+      const totalCount = sameSegment.reduce((sum, d) => sum + d.count, 0)
+
+      // Build breakdown by type with counts
+      const breakdown = sameSegment.map(d => ({
+        type: d.type,
+        count: d.count
+      })).sort((a, b) => b.count - a.count)
 
       return (
-        <div className="custom-tooltip">
-          <p className="tooltip-title" style={{ color: darkColor }}>
-            <strong>{type}</strong>
-          </p>
-          <p style={{ color: darkColor }}>Knowledge Gain: {knowledge}/4</p>
-          <p style={{ color: darkColor }}>Implementation: {likelihoodLabel}</p>
-          <p style={{ color: darkColor }}>Attendees: {count}</p>
+        <div className="custom-tooltip" style={{ minWidth: '200px', maxWidth: '350px' }}>
+          <p style={{ fontWeight: 600, marginBottom: '4px' }}>Knowledge Gain: {knowledge}/4</p>
+          <p style={{ fontWeight: 600, marginBottom: '4px', whiteSpace: 'nowrap' }}>Likelihood to Implement: {likelihoodLabel}</p>
+          <p style={{ fontWeight: 600, marginBottom: '4px' }}>Number of Respondents: {totalCount}</p>
+          <div style={{ fontSize: '9px', paddingLeft: '8px' }}>
+            {breakdown.map((b) => {
+              const color = COLORS[b.type] || '#333'
+              const darkColor = darkenColor(color)
+              return (
+                <p key={b.type} style={{ color: darkColor, fontWeight: 500, margin: '2px 0' }}>
+                  {b.type}: {b.count}
+                </p>
+              )
+            })}
+          </div>
         </div>
       )
     }
@@ -152,6 +165,12 @@ export default function AttendeeSegmentationMatrix({ surveyData }) {
             width={85}
           />
           <ZAxis type="number" dataKey="count" range={[800, 5000]} name="Count" />
+          <Tooltip
+            content={<CustomTooltip />}
+            //allowEscapeViewBox={{ x: true, y: true }}
+            wrapperStyle={{ zIndex: 1000 }}
+            isAnimationActive={false}
+          />
           <Legend
             layout="vertical"
             verticalAlign="middle"
@@ -168,6 +187,7 @@ export default function AttendeeSegmentationMatrix({ surveyData }) {
                 name={type}
                 data={typeData}
                 fill={COLORS[type]}
+                isAnimationActive={false}
               />
             )
           })}

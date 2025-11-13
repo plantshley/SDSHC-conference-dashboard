@@ -139,14 +139,17 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
 
       // State Attendance Trends - use darker shades of state colors
       if (data.year && top5States.some(state => data[state] !== undefined)) {
+        // Calculate total for the year to get percentages
+        const yearTotal = payload.reduce((sum, entry) => sum + (entry.value || 0), 0)
         return (
           <div className="custom-tooltip">
             <p className="tooltip-title"><strong>{data.year}</strong></p>
             {payload.map((entry, index) => {
               const darkColor = darkenColor(entry.color)
+              const percentage = yearTotal > 0 ? ((entry.value / yearTotal) * 100).toFixed(1) : 0
               return (
                 <p key={index} style={{ color: darkColor, fontWeight: 500 }}>
-                  {entry.name}: {entry.value}
+                  {entry.name}: {entry.value} ({percentage}%)
                 </p>
               )
             })}
@@ -184,6 +187,9 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
   return (
     <section>
       <h2>Geographic Reach</h2>
+      <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#666', marginTop: '-12px', marginBottom: '20px' }}>
+        Counts and percentages based on ticket registration data
+      </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
         {/* Top States */}

@@ -89,7 +89,7 @@ export default function OverviewSection({ surveyData }) {
       <div className="chart-section" style={{ marginTop: '32px' }}>
         <h3>Strongest Connections in Conference Impact</h3>
         <p style={{ fontSize: '14px', color: '#666', marginBottom: '16px' }}>
-          The conference creates a positive cycle - satisfaction, learning, and action reinforce each other. Attendees who learn more are happier and more likely to make changes on their operations.
+          The conference creates a positive cycle - satisfaction, learning, and action reinforce each other. Attendees who learn more are more sasisfied and more likely to make changes on their operations based on what they've learned.
         </p>
 
         <div style={{ display: 'grid', gap: '12px' }}>
@@ -202,7 +202,7 @@ export default function OverviewSection({ surveyData }) {
                 Technician Interest ⟷ Implementation Intention
               </div>
               <div style={{ fontSize: '12px', color: '#666' }}>
-                Moderate Connection - Those seeking help are more likely to implement
+                Moderate Connection - Those seeking help are more likely to implement changes
               </div>
             </div>
             <div style={{

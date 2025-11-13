@@ -100,10 +100,10 @@ function App() {
         <div className="dashboard-content">
           <div className="stats-grid">
             <StatsCard
-              title="Likely to Implement"
-              value="97%"
-              subtitle="278 of 287 respondents likely or very likely to make changes to operations"
-              icon="🌱"
+              title="Total Registrations"
+              value="1,307+"
+              subtitle="from years 2022-2025"
+              icon="🎟️"
             />
             <StatsCard
               title="High Satisfaction"
@@ -112,16 +112,16 @@ function App() {
               icon="⭐"
             />
             <StatsCard
-              title="Total Registrations"
-              value="1,307+"
-              subtitle="from years 2022-2025"
-              icon="🎟️"
-            />
-            <StatsCard
               title="Knowledge Gain"
               value="85%"
               subtitle="270 of 319 respondents ranked ≥3 out of 4 stars"
               icon="📚"
+            />
+            <StatsCard
+              title="Likely to Implement"
+              value="97%"
+              subtitle="278 of 287 respondents likely or very likely to make changes to operations"
+              icon="🌱"
             />
           </div>
           <p style={{
@@ -191,8 +191,8 @@ function App() {
 
       {/* Footer */}
       <footer className="dashboard-footer">
-        <p>&copy; 2025 South Dakota Soil Health Coalition | Dashboard built with conference survey data (2022-2025)</p>
-        <p>For more information: <a href="https://www.sdsoilhealthcoalition.org">sdsoilhealthcoalition.org</a> | Contact: sdsoilhealth@gmail.com</p>
+        <p>&copy; 2025 South Dakota Soil Health Coalition | Dashboard built with conference survey & registration data (2022-2025)</p>
+        <p>For more information: <a href="https://www.sdsoilhealthcoalition.org">sdsoilhealthcoalition.org</a> | Contact: ashley@sdsoil.org</p>
       </footer>
     </div>
   )

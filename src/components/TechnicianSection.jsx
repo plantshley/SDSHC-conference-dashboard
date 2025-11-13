@@ -51,11 +51,13 @@ export default function TechnicianSection({ surveyData }) {
     }
   })
 
-  const techByTypeChartData = Object.entries(techByTypeData).map(([type, levels]) => ({
-    type: type.length > 20 ? type.substring(0, 20) + '...' : type,
-    fullType: type,
-    ...levels
-  }))
+  const techByTypeChartData = Object.entries(techByTypeData)
+    .filter(([type]) => type !== 'Unknown')
+    .map(([type, levels]) => ({
+      type: type.length > 20 ? type.substring(0, 20) + '...' : type,
+      fullType: type,
+      ...levels
+    }))
 
   // Helper function to darken a hex color
   const darkenColor = (hex, percent = 30) => {
@@ -119,6 +121,9 @@ export default function TechnicianSection({ surveyData }) {
   return (
     <section>
       <h2>Soil Health Technician Program Interest</h2>
+      <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#666', marginTop: '-12px', marginBottom: '20px' }}>
+        Counts and percentages based on survey response data
+      </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px', marginBottom: '24px' }}>
         {/* Technician Interest Distribution */}
@@ -136,7 +141,7 @@ export default function TechnicianSection({ surveyData }) {
                 cx="50%"
                 cy="50%"
                 innerRadius={50}
-                outerRadius={120}
+                outerRadius={150}
                 label={(props) => {
                   const { cx, cy, midAngle, innerRadius, outerRadius, level, percentage, count } = props
                   const RADIAN = Math.PI / 180
@@ -148,10 +153,10 @@ export default function TechnicianSection({ surveyData }) {
                     <text
                       x={x}
                       y={y}
-                      fill="#666"
+                      fill="#292929ff"
                       textAnchor="middle"
                       dominantBaseline="central"
-                      style={{ fontSize: '11px', fontWeight: 600 }}
+                      style={{ fontSize: '13px', fontWeight: 400 }}
                     >
                       <tspan x={x} dy={-14}>{level}</tspan>
                       <tspan x={x} dy={14}>{percentage}%</tspan>
@@ -242,7 +247,7 @@ export default function TechnicianSection({ surveyData }) {
         <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌾</span>
-            <strong style={{ color: '#1976D2' }}>Strong Interest:</strong> Land managers/owners and producers are more likely to express interest in technician assistance than professionals, educators, or students.
+            <strong style={{ color: '#1976D2' }}>Strong Interest:</strong> Land managers/owners and producers are more likely to express interest in technician assistance than professionals, educators, or students
           </li>
           <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
             <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>✅</span>

@@ -51,6 +51,9 @@ export default function TopicsSection({ surveyData }) {
   return (
     <section>
       <h2>Topic Trends & Interest</h2>
+      <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#666', marginTop: '-12px', marginBottom: '20px' }}>
+        Counts and percentages based on survey response data
+      </p>
 
       <div className="chart-section">
         <h3>Topic Popularity</h3>

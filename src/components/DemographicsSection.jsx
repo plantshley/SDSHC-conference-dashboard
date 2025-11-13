@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, ComposedChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import AttendeeSegmentationMatrix from './AttendeeSegmentationMatrix'
 
 const COLOR_PALETTE = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3', '#DA70D6', '#EE82EE', '#FF69B4', '#FF1493', '#FF6347', '#FA8072', '#FFB347', '#F0E68C', '#9ACD32', '#90EE90', '#00FA9A']
@@ -102,17 +102,27 @@ export default function DemographicsSection({ surveyData }) {
 
   const attendeeByYearData = Object.keys(yearTypeData).sort().map(year => {
     const data = { year }
+    // Calculate total for this year
+    const yearTotal = Object.keys(attendeeTypeCounts).reduce((sum, type) => {
+      return sum + (yearTypeData[year][type] || 0)
+    }, 0)
+    // Convert counts to percentages
+    Object.keys(attendeeTypeCounts).forEach(type => {
+      const count = yearTypeData[year][type] || 0
+      data[type] = yearTotal > 0 ? ((count / yearTotal) * 100) : 0
+    })
+    return data
+  })
+
+  // Attendee type trends - ensure all types have values for each year (0 if missing)
+  const trendData = Object.keys(yearTypeData).sort().map(year => {
+    const data = { year }
+    // Add all attendee types with default value of 0
     Object.keys(attendeeTypeCounts).forEach(type => {
       data[type] = yearTypeData[year][type] || 0
     })
     return data
   })
-
-  // Attendee type trends
-  const trendData = Object.keys(yearTypeData).sort().map(year => ({
-    year,
-    ...yearTypeData[year]
-  }))
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -137,23 +147,50 @@ export default function DemographicsSection({ surveyData }) {
         )
       }
 
-      // For other charts (bar, line)
+      // For other charts (bar, line, area)
+      // Calculate total to determine if we're showing counts or percentages
+      const yearTotal = payload.reduce((sum, item) => sum + (item.value || 0), 0)
+      // Check if this is percentage data by seeing if total is close to 100
+      const isPercentageData = yearTotal >= 99 && yearTotal <= 101
+
       return (
         <div className="custom-tooltip">
           <p className="tooltip-title"><strong>{data.year}</strong></p>
-          {payload.map((entry, index) => (
-            <p key={index} style={{ color: entry.color ? darkenColor(entry.color) : '#333', fontWeight: 500 }}>
-              <span style={{
-                display: 'inline-block',
-                width: '12px',
-                height: '12px',
-                backgroundColor: entry.color || '#ccc',
-                marginRight: '6px',
-                borderRadius: '2px'
-              }}></span>
-              {entry.name}: {entry.value}
-            </p>
-          ))}
+          {payload.map((entry, index) => {
+            if (!isPercentageData && typeof entry.value === 'number') {
+              // For the trends chart (raw counts), show count and percentage
+              const percentage = yearTotal > 0 ? ((entry.value / yearTotal) * 100).toFixed(1) : 0
+              return (
+                <p key={index} style={{ color: entry.color ? darkenColor(entry.color) : '#333', fontWeight: 500 }}>
+                  <span style={{
+                    display: 'inline-block',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: entry.color || '#ccc',
+                    marginRight: '6px',
+                    borderRadius: '2px'
+                  }}></span>
+                  {entry.name}: {entry.value} ({percentage}%)
+                </p>
+              )
+            }
+
+            // For percentage-based charts, just show percentage
+            const displayValue = typeof entry.value === 'number' ? `${entry.value.toFixed(1)}%` : entry.value
+            return (
+              <p key={index} style={{ color: entry.color ? darkenColor(entry.color) : '#333', fontWeight: 500 }}>
+                <span style={{
+                  display: 'inline-block',
+                  width: '12px',
+                  height: '12px',
+                  backgroundColor: entry.color || '#ccc',
+                  marginRight: '6px',
+                  borderRadius: '2px'
+                }}></span>
+                {entry.name}: {displayValue}
+              </p>
+            )
+          })}
         </div>
       )
     }
@@ -200,6 +237,9 @@ export default function DemographicsSection({ surveyData }) {
   return (
     <section>
       <h2>Attendee Demographics & Reach</h2>
+      <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#666', marginTop: '-12px', marginBottom: '20px' }}>
+        Counts and percentages based on survey response data
+      </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
         {/* Attendee Type Distribution */}
@@ -234,7 +274,7 @@ export default function DemographicsSection({ surveyData }) {
 
         {/* Attendee Type by Year */}
         <div className="chart-section">
-          <h3>Attendee Type by Year</h3>
+          <h3>Attendee Type Distribution by Year</h3>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={attendeeByYearData} margin={{ top: 5, right: 20, left: 20, bottom: 20 }} barGap={0}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -243,9 +283,10 @@ export default function DemographicsSection({ surveyData }) {
                 style={{ fontSize: '14px' }}
               />
               <YAxis
-                label={{ value: 'Number of Attendees', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
+                label={{ value: 'Percentage (%)', angle: -90, position: 'insideLeft', offset: 5, style: { textAnchor: 'middle' } }}
                 style={{ fontSize: '11px' }}
                 width={60}
+                domain={[0, 100]}
               />
               <Tooltip content={<CustomTooltip />} />
               {Object.keys(attendeeTypeCounts).map((type, index) => (
@@ -266,7 +307,7 @@ export default function DemographicsSection({ surveyData }) {
       <div className="chart-section">
         <h3>Attendee Type Trends Over Time</h3>
         <ResponsiveContainer width="100%" height={450}>
-          <LineChart data={trendData} margin={{ top: 5, right: 10, left: 20, bottom: 20 }}>
+          <ComposedChart data={trendData} margin={{ top: 20, right: 10, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="year"
@@ -287,17 +328,18 @@ export default function DemographicsSection({ surveyData }) {
               content={renderLegend}
             />
             {Object.keys(attendeeTypeCounts).map((type, index) => (
-              <Line
+              <Area
                 key={type}
                 type="monotone"
                 dataKey={type}
+                stackId="1"
                 stroke={COLOR_MAP[type] || COLOR_PALETTE[index % COLOR_PALETTE.length]}
-                strokeWidth={2}
+                fill={COLOR_MAP[type] || COLOR_PALETTE[index % COLOR_PALETTE.length]}
+                fillOpacity={0.6}
                 name={type}
-                dot={{ r: 4 }}
               />
             ))}
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
 
