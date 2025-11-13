@@ -4,7 +4,7 @@ import MapView from './MapView'
 const COLORS = ['#87CEEB', '#6A5ACD', '#9370DB', '#BA55D3', '#DA70D6', '#EE82EE', '#FF69B4', '#FF1493', '#FF6347', '#FA8072', '#FFB347', '#F0E68C', '#9ACD32', '#90EE90', '#00FA9A']
 
 // Distinct colors for top 5 states
-const TOP_STATE_COLORS = ['#87CEEB', '#6A5ACD', '#FF69B4', '#FF6347', '#F0E68C']
+const TOP_STATE_COLORS = ['#87CEEB', '#BA55D3', '#FF69B4', '#FF6347', '#FFB347']
 
 export default function GeographySection({ geoStateOverall, geoStateByEvent, geoCityOverall }) {
   // Top 15 states - exclude international countries
@@ -261,19 +261,19 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px', marginBottom: '24px' }}>
         {/* South Dakota Regional Distribution Map */}
-        <div className="chart-section">
-          <h3>South Dakota Regional Distribution</h3>
-          <p style={{ fontSize: '14px', color: '#666', marginBottom: '16px' }}>
+        <div className="chart-section" style={{ padding: '16px' }}>
+          <h3 style={{ marginBottom: '6px', marginTop: '0' }}>South Dakota Regional Distribution</h3>
+          <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
             Interactive map of South Dakota cities. Circle size represents ticket registration counts.
           </p>
           <MapView geoCityOverall={geoCityOverall} />
         </div>
 
         {/* State Trends */}
-        <div className="chart-section">
-          <h3>State Attendance Trends</h3>
-          <ResponsiveContainer width="100%" height={450}>
-            <ComposedChart data={stateTrendData} margin={{ top: 50, right: 30, left: 20, bottom: 20 }}>
+        <div className="chart-section" style={{ padding: '16px' }}>
+          <h3 style={{ marginBottom: '12px', marginTop: '0' }}>Top 5 States Attendance Trends</h3>
+          <ResponsiveContainer width="100%" height={400}>
+            <ComposedChart data={stateTrendData} margin={{ top: 20, right: 10, left: 10, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="year"
@@ -288,7 +288,7 @@ export default function GeographySection({ geoStateOverall, geoStateByEvent, geo
               <Legend
                 verticalAlign="top"
                 height={40}
-                wrapperStyle={{ fontSize: '12px', fontWeight: 600, top: 0 }}
+                wrapperStyle={{ fontSize: '14px', fontWeight: 600, top: 0, bottom: 10}}
                 layout="horizontal"
               />
               {top5States.map((state, index) => (

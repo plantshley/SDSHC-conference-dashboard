@@ -103,7 +103,7 @@ const MapView = ({ geoCityOverall }) => {
       <MapContainer
         center={center}
         zoom={zoom}
-        style={{ height: '450px', width: '100%', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}
+        style={{ height: '340px', width: '100%', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
