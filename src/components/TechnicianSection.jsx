@@ -125,7 +125,7 @@ export default function TechnicianSection({ surveyData }) {
         <div className="chart-section">
           <h3>Overall Interest Level</h3>
           <p style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>
-            Percentages of applicable respondents
+            Percentages of applicable respondents (202 out of 319 total survey responses)
           </p>
           <ResponsiveContainer width="100%" height={400}>
             <PieChart>
@@ -148,7 +148,7 @@ export default function TechnicianSection({ surveyData }) {
                     <text
                       x={x}
                       y={y}
-                      fill="black"
+                      fill="#666"
                       textAnchor="middle"
                       dominantBaseline="central"
                       style={{ fontSize: '11px', fontWeight: 600 }}
@@ -173,6 +173,9 @@ export default function TechnicianSection({ surveyData }) {
         {/* Technician Interest by Type */}
         <div className="chart-section">
           <h3>Interest by Attendee Type</h3>
+          <p style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>
+            Colors represent attendee types, with lighter shades indicating lower interest levels.
+          </p>
           <ResponsiveContainer width="100%" height={450}>
             <BarChart data={techByTypeChartData} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -225,6 +228,28 @@ export default function TechnicianSection({ surveyData }) {
       </div>
 
       <TechnicianProgramPotential surveyData={surveyData} />
+
+      <div className="insights-box" style={{
+        background: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)',
+        color: '#333',
+        padding: '32px',
+        borderRadius: '12px',
+        marginTop: '32px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        borderLeft: '6px solid #42A5F5'
+      }}>
+        <h3 style={{ color: '#1976D2', marginBottom: '20px' }}>Key Insights</h3>
+        <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>🌾</span>
+            <strong style={{ color: '#1976D2' }}>Strong Interest:</strong> Land managers/owners and producers are more likely to express interest in technician assistance than professionals, educators, or students.
+          </li>
+          <li style={{ marginBottom: '16px', paddingLeft: '32px', position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 0, fontSize: '22px' }}>✅</span>
+            <strong style={{ color: '#1976D2' }}>Implementation Readiness:</strong> Among interested attendees, majority indicate likelihood to implement changes based on content learned at the conference, suggesting strong program potential
+          </li>
+        </ul>
+      </div>
     </section>
   )
 }

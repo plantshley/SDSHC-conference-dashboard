@@ -157,21 +157,21 @@ export default function TechnicianProgramPotential({ surveyData }) {
       <div className="chart-section">
         <h4 style={{ fontSize: '16px', marginBottom: '12px' }}>Detailed Flow: Interested Attendees by Type & Implementation Likelihood</h4>
         <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>
-          Colors represent attendee types, with lighter shades indicating lower implementation likelihood. Legend uses grey to show shade progression.
+          Colors represent attendee types, with lighter shades indicating lower implementation likelihood.
         </p>
         <ResponsiveContainer width="100%" height={450}>
           <BarChart data={detailedFlowData} margin={{ top: 5, right: 30, left: 20, bottom: 40 }} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               type="number"
-              label={{ value: '% of all interested respondents', position: 'insideBottom', offset: -10, style: { fontSize: '12px' } }}
-              style={{ fontSize: '11px' }}
+              label={{ value: 'Percentage of all respondents interested in technician assistance (48% of all survey respondents)', position: 'insideBottom', offset: -10, style: { fontSize: '14px' } }}
+              style={{ fontSize: '13px' }}
             />
             <YAxis
               type="category"
               dataKey="fullType"
               width={200}
-              style={{ fontSize: '11px' }}
+              style={{ fontSize: '13px' }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend

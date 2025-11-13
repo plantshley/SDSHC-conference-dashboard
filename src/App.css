@@ -144,6 +144,32 @@ body {
   transform: scale(1.1) rotate(20deg) translateX(20px);
 }
 
+/* PDF Link Hover Animation */
+.pdf-hover-group {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.pdf-hover-group:hover a {
+  color: #BBDEFB;
+}
+
+.pdf-emoji {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 24px;
+  transition: all 0.5s ease;
+  transform: scale(0.8);
+  top: -2px;
+}
+
+.pdf-hover-group:hover .pdf-emoji {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .subtitle {
   margin: 0;
   font-size: 18px;
@@ -466,6 +492,7 @@ section h2 {
 
 .map-wrapper {
   position: relative;
+  z-index: 1;
 }
 
 .legend-color {

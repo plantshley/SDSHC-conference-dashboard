@@ -75,9 +75,9 @@ const cityCoordinates = {
 }
 
 const MapView = ({ geoCityOverall }) => {
-  // Center of South Dakota
+  // Center of South Dakota - adjusted to show entire state
   const center = [44.5, -100.0]
-  const zoom = 7
+  const zoom = 6
 
   // Process city data - ONLY South Dakota cities
   const cityData = geoCityOverall
@@ -90,13 +90,8 @@ const MapView = ({ geoCityOverall }) => {
       ...cityCoordinates[row.City]
     }))
 
-  // Color based on registration count
-  const getColor = (count) => {
-    if (count > 60) return '#BA68C8' // Purple for highest
-    if (count > 30) return '#90CAF9' // Light blue
-    if (count > 15) return '#F48FB1' // Pink
-    return '#9FA8DA' // Lavender for lowest
-  }
+  // Single color for all bubbles - middle blue-purple
+  const bubbleColor = '#9FA8DA'
 
   // Size based on count
   const getRadius = (count) => {
@@ -119,7 +114,7 @@ const MapView = ({ geoCityOverall }) => {
             key={idx}
             center={[location.lat, location.lng]}
             radius={getRadius(location.count)}
-            fillColor={getColor(location.count)}
+            fillColor={bubbleColor}
             color="#fff"
             weight={2}
             opacity={0.9}
