@@ -52,29 +52,44 @@ export default function AttendeeSegmentationMatrix({ surveyData }) {
 
   const scatterData = Object.values(segmentData)
 
+  // Create master data points - one per unique knowledge-likelihood position
+  const masterData = {}
+  scatterData.forEach(d => {
+    const posKey = `${d.knowledge}-${d.likelihood}`
+    if (!masterData[posKey]) {
+      masterData[posKey] = {
+        knowledge: d.knowledge,
+        likelihood: d.likelihood,
+        likelihoodLabel: d.likelihoodLabel,
+        count: 0,
+        isMaster: true
+      }
+    }
+    masterData[posKey].count += d.count
+  })
+  const masterScatterData = Object.values(masterData)
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length > 0) {
-      const point = payload[0]?.payload
+      // Find the master data point (should be the last one in payload)
+      const masterPoint = payload.find(p => p.payload && p.payload.isMaster)?.payload
 
-      if (!point || !point.type) return null
+      if (!masterPoint) return null
 
-      const knowledge = point.knowledge
-      const likelihood = point.likelihood
-      const likelihoodLabel = point.likelihoodLabel
+      const knowledge = masterPoint.knowledge
+      const likelihood = masterPoint.likelihood
+      const likelihoodLabel = masterPoint.likelihoodLabel
 
-      // Find all data points with the same knowledge and likelihood
-      const sameSegment = scatterData.filter(d =>
-        d.knowledge === knowledge && d.likelihood === likelihood
-      )
+      // Find all attendee type segments at this position from scatterData
+      const breakdown = scatterData
+        .filter(d => d.knowledge === knowledge && d.likelihood === likelihood)
+        .map(d => ({
+          type: d.type,
+          count: d.count
+        }))
+        .sort((a, b) => b.count - a.count)
 
-      // Calculate total count for this segment
-      const totalCount = sameSegment.reduce((sum, d) => sum + d.count, 0)
-
-      // Build breakdown by type with counts
-      const breakdown = sameSegment.map(d => ({
-        type: d.type,
-        count: d.count
-      })).sort((a, b) => b.count - a.count)
+      const totalCount = breakdown.reduce((sum, d) => sum + d.count, 0)
 
       return (
         <div className="custom-tooltip" style={{ minWidth: '200px', maxWidth: '350px' }}>
@@ -191,6 +206,15 @@ export default function AttendeeSegmentationMatrix({ surveyData }) {
               />
             )
           })}
+          {/* Master invisible layer on top to ensure single tooltip per position */}
+          <Scatter
+            name=""
+            data={masterScatterData}
+            fill="transparent"
+            stroke="transparent"
+            isAnimationActive={false}
+            legendType="none"
+          />
         </ScatterChart>
       </ResponsiveContainer>
 
