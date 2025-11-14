@@ -316,7 +316,7 @@ export default function OverviewSection({ surveyData }) {
 
             <span className="metrics-link-group">
               <a
-                href={import.meta.env.BASE_URL + '2022-25 Soil Health Conference Attendee Maps.pdf'}
+                href={import.meta.env.BASE_URL + '2022-25 Conference Attendance Metric Tables.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
